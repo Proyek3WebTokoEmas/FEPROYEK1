@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Toko Mas Duta Sumedang Online Store | Contact Us</title>
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="brand text-main">
+                <a href="index.html">
+                    <h1>TOKO MAS DUTA SUMEDANG</h1>
+                </a>
+            </div>
+            <div class="links">
+                <ul>
+                    <li><a href="men.html">Men</a></li>
+                    <li><a href="women.html">Women</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html" class="active">Contacts</a></li>
+                </ul>
+            </div>
+            <div class="icon-for-user">
+                <a href="loginregis.html">
+                    <img src="assets/icons/person.svg" alt="person">
+                </a>
+                <a href="cart.html">
+                    <img src="assets/icons/shop-bag.svg" alt="shopping bag">
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-banner">
+            <div class="container text-center">
+                <h1 class="text-main">Contact Us</h1>
+                <p class="text-second">We'd love to hear from you!</p>
+            </div>
+        </section>
+
+        <section class="contact-form-section py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form action="process-contact.php" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="subject" name="subject" placeholder="Enter subject" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-main w-100">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-details py-5 bg-light">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-main">Our Address</h5>
+                        <p class="text-second">123 Jewelry Lane, Sumedang, Indonesia</p>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-main">Call Us</h5>
+                        <p class="text-second">+62 123 456 789</p>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <h5 class="text-main">Email Us</h5>
+                        <p class="text-second">support@TOKO MAS DUTA SUMEDANG-store.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="text-second text-center">Toko Mas Duta Sumedang Online Store &copy; 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="library/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Toko Mas Duta Sumedang Online Store | Cart</title>
+    <style>
+        .btn-update {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-update:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        .btn-remove {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-remove:hover {
+            background-color: #a71d2a;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="brand text-main">
+                <a href="index.html">
+                    <h1>TOKO MAS DUTA SUMEDANG</h1>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="cart-section py-5">
+            <div class="container">
+                <h2 class="text-main text-center mb-4">Keranjang Belanja</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="text-center">
+                                <th>No</th>
+                                <th>Produk</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Contoh data produk -->
+                            <tr class="text-center">
+                                <td>1</td>
+                                <td>
+                                    <img src="images/kalung.jpg" alt="Kalung" width="80">
+                                    <p class="mt-2">Kalung Emas 24K</p>
+                                </td>
+                                <td>Rp 2.500.000</td>
+                                <td>
+                                    <input type="number" class="form-control w-50 mx-auto" value="1" min="1">
+                                </td>
+                                <td>Rp 2.500.000</td>
+                                <td>
+                                    <button class="btn btn-update btn-sm">Update</button>
+                                    <button class="btn btn-remove btn-sm">Hapus</button>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td>2</td>
+                                <td>
+                                    <img src="images/cincin.jpg" alt="Cincin" width="80">
+                                    <p class="mt-2">Cincin Berlian</p>
+                                </td>
+                                <td>Rp 3.000.000</td>
+                                <td>
+                                    <input type="number" class="form-control w-50 mx-auto" value="2" min="1">
+                                </td>
+                                <td>Rp 6.000.000</td>
+                                <td>
+                                    <button class="btn btn-update btn-sm">Update</button>
+                                    <button class="btn btn-remove btn-sm">Hapus</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-end mt-4">
+                    <h4>Total: Rp 8.500.000</h4>
+                    <a href="checkout.html" class="btn btn-success btn-lg mt-2">Checkout</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

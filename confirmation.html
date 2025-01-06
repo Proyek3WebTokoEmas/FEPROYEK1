@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Konfirmasi Pesanan - Toko Mas Duta Sumedang</title>
+    <style>
+        .confirmation-container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .confirmation-header {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .order-summary {
+            margin-top: 20px;
+        }
+        .order-summary table {
+            width: 100%;
+        }
+        .btn-back {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="brand text-main">
+                <a href="index.html">
+                    <h1>TOKO MAS DUTA SUMEDANG</h1>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="confirmation-section py-5">
+            <div class="confirmation-container shadow">
+                <h2 class="confirmation-header text-center mb-4">Terima Kasih! Pesanan Anda Berhasil</h2>
+                <p class="text-center">Pesanan Anda telah kami terima dan sedang diproses. Berikut adalah detail pesanan Anda:</p>
+                
+                <div class="order-summary">
+                    <h5 class="mb-3">Rincian Pesanan:</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Nomor Pesanan</th>
+                            <td>#12345678</td>
+                        </tr>
+                        <tr>
+                            <th>Nama Pemesan</th>
+                            <td>John Doe</td>
+                        </tr>
+                        <tr>
+                            <th>Total Pembayaran</th>
+                            <td>Rp 1,500,000</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td><span class="text-success fw-bold">Lunas</span></td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Pesanan</th>
+                            <td>30 Desember 2024</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="index.html" class="btn btn-back">Kembali ke Beranda</a>
+                    <a href="struk.html" class="btn btn-back">Cetak Struk</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Custom script for confirmation page if needed
+        console.log("Halaman konfirmasi berhasil dimuat.");
+    </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Checkout - Toko Mas Duta Sumedang</title>
+    <style>
+        .checkout-container {
+            max-width: 900px;
+            margin: 50px auto;
+        }
+        .section-title {
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .btn-checkout {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-checkout:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="brand text-main">
+                <a href="index.html">
+                    <h1>TOKO MAS DUTA SUMEDANG</h1>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="checkout-section py-5">
+            <div class="container checkout-container">
+                <h2 class="section-title text-center">Checkout</h2>
+                <div class="row">
+                    <!-- Formulir Pengiriman -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-4 shadow">
+                            <h3 class="section-title">Informasi Pengiriman</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="shippingName" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="shippingName" placeholder="Masukkan nama lengkap" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shippingAddress" class="form-label">Alamat Pengiriman</label>
+                                    <textarea class="form-control" id="shippingAddress" placeholder="Masukkan alamat lengkap" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="shippingPhone" class="form-label">Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="shippingPhone" placeholder="Masukkan nomor telepon" required>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Ringkasan Pesanan -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card p-4 shadow">
+                            <h3 class="section-title">Ringkasan Pesanan</h3>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Emas 24K (10 gram)</span>
+                                    <span>Rp 10.000.000</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Biaya Pengiriman</span>
+                                    <span>Rp 50.000</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between font-weight-bold">
+                                    <span>Total</span>
+                                    <span>Rp 10.050.000</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metode Pembayaran -->
+                <div class="card p-4 shadow mb-4">
+                    <h3 class="section-title">Metode Pembayaran</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Pilih Metode</label>
+                            <select class="form-select" required>
+                                <option value="">Pilih metode pembayaran</option>
+                                <option value="bank_transfer">Transfer Bank</option>
+                                <option value="credit_card">Kartu Kredit</option>
+                                <option value="cash_on_delivery">Bayar di Tempat (COD)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tombol Checkout -->
+                <div class="text-center">
+                    <button type="button" class="btn btn-checkout px-4 py-2" id="completeCheckout">Selesaikan Pembayaran</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tambahkan event listener untuk tombol checkout
+        document.getElementById('completeCheckout').addEventListener('click', () => {
+            // Tampilkan notifikasi sukses
+            alert("Pesanan Anda berhasil dibuat! Anda akan diarahkan ke halaman konfirmasi.");
+            // Redirect ke halaman confirmation.html
+            window.location.href = "confirmation.html";
+        });
+    </script>
+</body>
+</html>

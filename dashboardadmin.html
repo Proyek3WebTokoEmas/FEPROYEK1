@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .sidebar a.active {
+            background-color: #007bff;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h3>Admin Dashboard</h3>
+        <a href="#products" class="active">Kelola Produk</a>
+        <a href="kelolapesanan.html">Kelola Pesanan</a>
+        <a href="kelolapengguna.html">Kelola Pengguna</a>
+        <a href="menutransaksi.html">Transaksi</a>
+        <a href="index.html">Kembali ke Website</a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Navbar -->
+        <div class="navbar">
+            <h1>Dashboard Admin</h1>
+        </div>
+
+        <!-- Section: Kelola Produk -->
+        <section id="products">
+            <h2>Kelola Produk</h2>
+            <button class="btn btn-primary mb-3">Tambah Produk</button>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Produk</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Kalung Emas 24K</td>
+                        <td>Kalung</td>
+                        <td>Rp 2.500.000</td>
+                        <td>20</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm">Edit</button>
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan lebih banyak produk di sini -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section: Kelola Pesanan -->
+        <section id="orders" class="mt-5">
+            <h2>Kelola Pesanan</h2>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Pelanggan</th>
+                        <th>Produk</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>Kalung Emas 24K</td>
+                        <td>Rp 2.500.000</td>
+                        <td>Pending</td>
+                        <td>
+                            <button class="btn btn-success btn-sm">Konfirmasi</button>
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan lebih banyak pesanan di sini -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Section: Kelola Pengguna -->
+        <section id="users" class="mt-5">
+            <h2>Kelola Pengguna</h2>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nama Pengguna</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Admin</td>
+                        <td>admin@example.com</td>
+                        <td>Admin</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </td>
+                    </tr>
+                    <!-- Tambahkan lebih banyak pengguna di sini -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
