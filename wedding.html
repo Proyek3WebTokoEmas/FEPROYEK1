@@ -6,12 +6,17 @@
 	<link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style/main.css">
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-	<title>TOKO MAS DUTA SUMEDANG Online Store | Men</title>
+	<title>TOKO MAS DUTA SUMEDANG Online Store | Wedding</title>
+	<style>
+		.text-second { color: #6c757d; }
+		.desc-product { padding: 10px; text-align: center; }
+		.product-image img { max-height: 200px; object-fit: cover; }
+	</style>
 </head>
 <body>
 	<header>
 		<nav class="main-nav">
-			<div class="brand text-main">
+			<div class="brand">
 				<a href="index.html">
 					<h1>TOKO MAS DUTA SUMEDANG</h1>
 				</a>
@@ -19,7 +24,7 @@
 			<div class="links">
 				<ul>
 					<li><a href="wedding.html" class="active">Wedding</a></li>
-					<li><a href="women.html">Custom</a></li>
+					<li><a href="custom.html">Custom</a></li>
 					<li><a href="categories.html">Categories</a></li>
 					<li><a href="blog.html">Blog</a></li>
 					<li><a href="contacts.html">Contacts</a></li>
@@ -41,11 +46,11 @@
 			<div class="container">
 				<div class="row justify-content-center align-items-center pad-tab" data-aos="fade-up">
 					<div class="banner-text col-sm-12 col-md-6">
-						<h1 class="text-main">Wedding's Collection</h1>
-						<p class="text-second">Discover the latest fashion for men, crafted for style and comfort.</p>
+						<h1>Wedding's Collection</h1>
+						<p class="text-second">Discover the latest wedding jewelry, crafted for style and elegance.</p>
 					</div>
 					<div class="banner-image col-sm-12 col-md-6 d-none d-sm-block">
-						<img src="assets/images/men-banner.jpg" alt="Men's Collection Banner" class="img-fluid">
+						<img src="assets/images/wedding-banner.jpg" alt="Wedding Collection Banner" class="img-fluid">
 					</div>
 				</div>
 			</div>
@@ -53,44 +58,40 @@
 
 		<section class="products-section">
 			<div class="container">
-				<h2 class="text-main text-center">Our Wedding's Products</h2>
+				<h2 class="text-center">Our Wedding Products</h2>
 				<div class="products row justify-content-center">
+					<!-- Produk 1 -->
 					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
-						<div class="bg-white">
+						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
-								<img src="assets/images/men-product1.jpg" alt="product" class="img-fluid">
+								<img src="assets/images/product1.png" alt="Emas 24k" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Casual Shirt</p>
-									<p class="text-second">$15.00</p>
-								</a>
+								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Emas 24k', 1000000, 'assets/images/product1.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-						<div class="bg-white">
+
+					<!-- Produk 2 -->
+					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
+						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
-								<img src="assets/images/men-product2.jpg" alt="product" class="img-fluid">
+								<img src="assets/images/product2.png" alt="Logam Mulia" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Denim Jacket</p>
-									<p class="text-second">$25.00</p>
-								</a>
+								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Logam Mulia', 1200000, 'assets/images/product2.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-						<div class="bg-white">
+
+					<!-- Produk 3 -->
+					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
+						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
-								<img src="assets/images/men-product3.jpg" alt="product" class="img-fluid">
+								<img src="assets/images/product3.png" alt="Berlian" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Classic Watch</p>
-									<p class="text-second">$50.00</p>
-								</a>
+								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Berlian', 5000000, 'assets/images/product3.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
@@ -99,15 +100,65 @@
 		</section>
 	</main>
 
+	<!-- Modal Produk -->
+	<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="productModalLabel">Detail Produk</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<img id="productImage" src="" alt="Product Image" class="img-fluid mb-3">
+					<p id="productPrice">Harga per gram:</p>
+					<div class="mb-3">
+						<label for="productWeight" class="form-label">Berat (gram):</label>
+						<input type="number" class="form-control" id="productWeight" min="1" value="1" oninput="calculatePrice()">
+					</div>
+					<p id="totalPrice">Harga:</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Tambahkan ke Keranjang</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<footer>
 		<div class="container">
-			<p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
+			<p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2025 All Rights Reserved</p>
 		</div>
 	</footer>
 
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="library/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
 		AOS.init();
+
+		let currentPricePerGram = 0;
+
+		function showProductModal(name, pricePerGram, image) {
+			currentPricePerGram = pricePerGram;
+
+			document.getElementById('productModalLabel').innerText = name;
+			document.getElementById('productPrice').innerText = `Harga per gram: Rp${pricePerGram.toLocaleString()}`;
+			document.getElementById('productImage').src = image;
+
+			// Reset berat dan harga total
+			document.getElementById('productWeight').value = 1;
+			calculatePrice();
+
+			// Tampilkan modal
+			const modal = new bootstrap.Modal(document.getElementById('productModal'));
+			modal.show();
+		}
+
+		function calculatePrice() {
+			const weight = parseInt(document.getElementById('productWeight').value) || 1;
+			const totalPrice = weight * currentPricePerGram;
+			document.getElementById('totalPrice').innerText = `Harga: Rp${totalPrice.toLocaleString()}`;
+		}
 	</script>
 </body>
 </html>
