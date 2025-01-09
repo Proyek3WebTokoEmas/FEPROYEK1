@@ -6,7 +6,32 @@
 	<link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style/main.css">
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-	<title>TOKO MAS DUTA SUMEDANG Online Store | Women</title>
+	<title>TOKO MAS DUTA SUMEDANG | Custom Jewelry</title>
+	<style>
+		.custom-form {
+			background-color: #f9f9f9;
+			border-radius: 8px;
+			padding: 20px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+		}
+		.btn-submit {
+			background-color: #007bff;
+			color: white;
+			font-weight: bold;
+		}
+		.btn-submit:hover {
+			background-color: #0056b3;
+		}
+		#preview-image {
+			width: 100%;
+			max-height: 300px;
+			object-fit: cover;
+			display: none;
+			margin-top: 20px;
+			border-radius: 8px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+		}
+	</style>
 </head>
 <body>
 	<header>
@@ -18,8 +43,8 @@
 			</div>
 			<div class="links">
 				<ul>
-					<li><a href="men.html">Men</a></li>
-					<li><a href="women.html" class="active">Women</a></li>
+					<li><a href="men.html">Wedding</a></li>
+					<li><a href="women.html" class="active">Custom</a></li>
 					<li><a href="categories.html">Categories</a></li>
 					<li><a href="blog.html">Blog</a></li>
 					<li><a href="contacts.html">Contacts</a></li>
@@ -37,62 +62,52 @@
 	</header>
 
 	<main>
-		<section class="banner">
+		<section class="custom-section py-5">
 			<div class="container">
-				<div class="row justify-content-center align-items-center pad-tab" data-aos="fade-up">
-					<div class="banner-text col-sm-12 col-md-6">
-						<h1 class="text-main">Women's Collection</h1>
-						<p class="text-second">Explore the finest styles and designs for modern women.</p>
-					</div>
-					<div class="banner-image col-sm-12 col-md-6 d-none d-sm-block">
-						<img src="assets/images/women-banner.jpg" alt="Women's Collection Banner" class="img-fluid">
-					</div>
-				</div>
-			</div>
-		</section>
+				<h2 class="text-main text-center mb-4">Custom Jewelry Order</h2>
+				<div class="row justify-content-center">
+					<div class="col-md-8">
+						<form class="custom-form" action="confirmation.html" method="POST">
+							<div class="mb-3">
+								<label for="productType" class="form-label">Jenis Perhiasan</label>
+								<select class="form-select" id="productType" name="productType" required>
+									<option value="cincin">Cincin</option>
+									<option value="gelang">Gelang</option>
+									<option value="kalung">Kalung</option>
+									<option value="anting">Anting</option>
+								</select>
+							</div>
 
-		<section class="products-section">
-			<div class="container">
-				<h2 class="text-main text-center">Our Women's Products</h2>
-				<div class="products row justify-content-center">
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
-						<div class="bg-white">
-							<div class="product-image text-center">
-								<img src="assets/images/women-product1.jpg" alt="product" class="img-fluid">
+							<img id="preview-image" src="" alt="Preview Perhiasan">
+
+							<div class="mb-3">
+								<label for="goldType" class="form-label">Jenis Emas</label>
+								<select class="form-select" id="goldType" name="goldType" required>
+									<option value="24k">Emas 24K</option>
+									<option value="22k">Emas 22K</option>
+									<option value="18k">Emas 18K</option>
+								</select>
 							</div>
-							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Floral Dress</p>
-									<p class="text-second">$20.00</p>
-								</a>
+							<div class="mb-3">
+								<label for="goldWeight" class="form-label">Berat Emas (gram)</label>
+								<input type="number" class="form-control" id="goldWeight" name="goldWeight" min="1" max="100" placeholder="Masukkan berat emas" required>
 							</div>
-						</div>
-					</div>
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
-						<div class="bg-white">
-							<div class="product-image text-center">
-								<img src="assets/images/women-product2.jpg" alt="product" class="img-fluid">
+							<div class="mb-3">
+								<label for="mixMaterial" class="form-label">Campuran Tambahan</label>
+								<select class="form-select" id="mixMaterial" name="mixMaterial[]" required>
+									<option value="perak">Perak</option>
+									<option value="palladium">Palladium</option>
+									<option value="platinum">Platinum</option>
+								</select>
 							</div>
-							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Evening Gown</p>
-									<p class="text-second">$35.00</p>
-								</a>
+							<div class="mb-3">
+								<label for="customDetails" class="form-label">Detail Tambahan</label>
+								<textarea class="form-control" id="customDetails" name="customDetails" rows="3" placeholder="Masukkan detail tambahan (opsional)"></textarea>
 							</div>
-						</div>
-					</div>
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
-						<div class="bg-white">
-							<div class="product-image text-center">
-								<img src="assets/images/women-product3.jpg" alt="product" class="img-fluid">
+							<div class="text-center">
+								<button type="submit" class="btn btn-submit px-4 py-2">Pesan Sekarang</button>
 							</div>
-							<div class="desc-product">
-								<a href="#">
-									<p class="text-second">Handbag</p>
-									<p class="text-second">$45.00</p>
-								</a>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -100,14 +115,37 @@
 	</main>
 
 	<footer>
-		<div class="container">
-			<p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
+		<div class="container text-center">
+			<p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
 		</div>
 	</footer>
 
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script>
 		AOS.init();
+
+		const productType = document.getElementById('productType');
+		const previewImage = document.getElementById('preview-image');
+
+		const imageMap = {
+			cincin: 'assets/images/cincin.jpg',
+			gelang: 'assets/images/gelang.jpg',
+			kalung: 'assets/images/kalung.jpg',
+			anting: 'assets/images/anting.jpg'
+		};
+
+		productType.addEventListener('change', (event) => {
+			const selectedValue = event.target.value;
+			console.log('Selected value:', selectedValue); // Debugging: cek value yang dipilih
+			if (imageMap[selectedValue]) {
+				console.log('Image path:', imageMap[selectedValue]); // Debugging: cek path gambar
+				previewImage.src = imageMap[selectedValue];
+				previewImage.style.display = 'block';
+			} else {
+				console.log('Image not found for selected value'); // Debugging: jika gambar tidak ditemukan
+				previewImage.style.display = 'none';
+			}
+		});
 	</script>
 </body>
 </html>
