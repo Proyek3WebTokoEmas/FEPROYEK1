@@ -4,38 +4,111 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style/main.css" />
     <title>Toko Mas Duta Sumedang Online Store | Login & Register</title>
     <style>
       /* Custom Styles */
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: #f8f9fa;
+      }
+      .main-nav {
+        background-color: #343a40;
+        padding: 15px 0;
+      }
+      .main-nav .brand h1 {
+        color: #fff;
+        font-size: 28px;
+        text-align: center;
+      }
+
       .btn-login,
-      .btn-admin {
+      .btn-register {
         background-color: #007bff;
         color: #fff;
+        border-radius: 30px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
       }
       .btn-login:hover,
-      .btn-admin:hover {
+      .btn-register:hover {
         background-color: #0056b3;
-        color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
       .btn-register {
         background-color: #28a745;
-        color: #fff;
       }
       .btn-register:hover {
-        background-color: #1e7e34;
-        color: #fff;
+        background-color: #218838;
       }
+      
       .form-container {
         display: none;
       }
       .form-container.active {
         display: block;
       }
+
+      .auth-section {
+        padding: 60px 0;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-body {
+        padding: 30px;
+      }
+
+      .card-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        font-weight: 500;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        transition: border 0.3s ease;
+      }
+
+      .form-control:focus {
+        border: 1px solid #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+      }
+
       .alert-link {
         color: #28a745;
         cursor: pointer;
         text-decoration: underline;
+      }
+
+      footer {
+        background-color: #343a40;
+        padding: 20px 0;
+      }
+
+      footer p {
+        color: #fff;
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .form-container {
+          width: 100%;
+        }
       }
     </style>
   </head>
@@ -55,9 +128,7 @@
         <div class="container">
           <div class="text-center mb-4">
             <button id="showLoginForm" class="btn btn-login mx-2">Login</button>
-            <button id="showRegisterForm" class="btn btn-register mx-2">
-              Register
-            </button>
+            <button id="showRegisterForm" class="btn btn-register mx-2">Register</button>
           </div>
 
           <div class="row justify-content-center">
@@ -69,25 +140,11 @@
                   <form id="loginFormElement">
                     <div class="mb-3">
                       <label for="loginEmail" class="form-label">Email</label>
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="loginEmail"
-                        placeholder="Enter your email"
-                        required
-                      />
+                      <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required />
                     </div>
                     <div class="mb-3">
-                      <label for="loginPassword" class="form-label"
-                        >Password</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="loginPassword"
-                        placeholder="Enter your password"
-                        required
-                      />
+                      <label for="loginPassword" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required />
                     </div>
                     <div class="d-grid">
                       <button type="submit" class="btn btn-login">Login</button>
@@ -104,57 +161,23 @@
                   <h3 class="card-title text-center">Register</h3>
                   <form id="registerFormElement">
                     <div class="mb-3">
-                      <label for="registerName" class="form-label"
-                        >Nama Lengkap</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="registerName"
-                        placeholder="Enter your full name"
-                        required
-                      />
+                      <label for="registerName" class="form-label">Nama Lengkap</label>
+                      <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required />
                     </div>
                     <div class="mb-3">
-                      <label for="registerEmail" class="form-label"
-                        >Email</label
-                      >
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="registerEmail"
-                        placeholder="Enter your email"
-                        required
-                      />
+                      <label for="registerEmail" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required />
                     </div>
                     <div class="mb-3">
-                      <label for="registerPassword" class="form-label"
-                        >Password</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="registerPassword"
-                        placeholder="Enter your password"
-                        required
-                      />
+                      <label for="registerPassword" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required />
                     </div>
                     <div class="mb-3">
-                      <label for="registerConfirmPassword" class="form-label"
-                        >Konfirmasi Password</label
-                      >
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="registerConfirmPassword"
-                        placeholder="Confirm your password"
-                        required
-                      />
+                      <label for="registerConfirmPassword" class="form-label">Konfirmasi Password</label>
+                      <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm your password" required />
                     </div>
                     <div class="d-grid">
-                      <button type="submit" class="btn btn-register">
-                        Register
-                      </button>
+                      <button type="submit" class="btn btn-register">Register</button>
                     </div>
                   </form>
                 </div>
@@ -238,9 +261,7 @@
             const result = await response.json();
 
             if (response.ok) {
-              alert(
-                "Registrasi berhasil! Silakan cek email untuk link verifikasi."
-              );
+              alert("Registrasi berhasil! Silakan cek email untuk link verifikasi.");
             } else {
               alert(result.message || "Registrasi gagal!");
             }

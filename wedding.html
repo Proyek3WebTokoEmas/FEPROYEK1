@@ -5,12 +5,93 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="style/main.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 	<title>TOKO MAS DUTA SUMEDANG Online Store | Wedding</title>
 	<style>
+		body {
+			font-family: 'Poppins', sans-serif;
+			background-color: #f4f7fa;
+			color: #333;
+		}
+
 		.text-second { color: #6c757d; }
-		.desc-product { padding: 10px; text-align: center; }
-		.product-image img { max-height: 200px; object-fit: cover; }
+
+		/* Header */
+		nav.main-nav {
+			background-color: #fff;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+		nav.main-nav .brand h1 {
+			font-weight: 600;
+			color: #007bff;
+		}
+		nav.main-nav .links ul li a:hover {
+			color: #007bff;
+			border-bottom: 2px solid #007bff;
+		}
+
+		/* Banner */
+		.banner {
+			background-color: #007bff;
+			color: black;
+			padding: 80px 0;
+		}
+		.banner-text h1 {
+			font-size: 3rem;
+			font-weight: 600;
+		}
+		.banner-image img {
+			width: 100%;
+			object-fit: cover;
+			border-radius: 10px;
+		}
+
+		/* Product Section */
+		.products-section {
+			padding: 50px 0;
+		}
+		.products .product {
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		.products .product:hover {
+			transform: translateY(-10px);
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+		}
+		.product-image img {
+			max-height: 250px;
+			object-fit: cover;
+			border-radius: 10px;
+		}
+		.desc-product button {
+			font-weight: 600;
+			background-color: #007bff;
+			border: none;
+			color: #fff;
+			padding: 10px;
+			width: 100%;
+			border-radius: 5px;
+			transition: background-color 0.3s ease;
+		}
+		.desc-product button:hover {
+			background-color: #0056b3;
+		}
+
+		/* Modal */
+		.modal-content {
+			border-radius: 10px;
+		}
+		.modal-header {
+			background-color: #007bff;
+			color: #fff;
+			border-radius: 10px 10px 0 0;
+		}
+		.modal-body {
+			padding: 30px;
+		}
+		.modal-footer button {
+			border-radius: 5px;
+		}
 	</style>
 </head>
 <body>
@@ -44,12 +125,12 @@
 	<main>
 		<section class="banner">
 			<div class="container">
-				<div class="row justify-content-center align-items-center pad-tab" data-aos="fade-up">
-					<div class="banner-text col-sm-12 col-md-6">
+				<div class="row justify-content-center align-items-center" data-aos="fade-up">
+					<div class="banner-text col-md-6">
 						<h1>Wedding's Collection</h1>
 						<p class="text-second">Discover the latest wedding jewelry, crafted for style and elegance.</p>
 					</div>
-					<div class="banner-image col-sm-12 col-md-6 d-none d-sm-block">
+					<div class="banner-image col-md-6">
 						<img src="assets/images/wedding-banner.jpg" alt="Wedding Collection Banner" class="img-fluid">
 					</div>
 				</div>
@@ -58,40 +139,40 @@
 
 		<section class="products-section">
 			<div class="container">
-				<h2 class="text-center">Our Wedding Products</h2>
+				<h2 class="text-center mb-5">Our Wedding Products</h2>
 				<div class="products row justify-content-center">
-					<!-- Produk 1 -->
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
+					<!-- Product 1 -->
+					<div class="product col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
 								<img src="assets/images/product1.png" alt="Emas 24k" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Emas 24k', 1000000, 'assets/images/product1.png')">Detail Produk</button>
+								<button class="btn btn-primary" onclick="showProductModal('Emas 24k', 1000000, 'assets/images/product1.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
 
-					<!-- Produk 2 -->
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
+					<!-- Product 2 -->
+					<div class="product col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
 								<img src="assets/images/product2.png" alt="Logam Mulia" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Logam Mulia', 1200000, 'assets/images/product2.png')">Detail Produk</button>
+								<button class="btn btn-primary" onclick="showProductModal('Logam Mulia', 1200000, 'assets/images/product2.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
 
-					<!-- Produk 3 -->
-					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
+					<!-- Product 3 -->
+					<div class="product col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
 								<img src="assets/images/product3.png" alt="Berlian" class="img-fluid">
 							</div>
 							<div class="desc-product">
-								<button class="btn btn-primary w-100 mt-3" onclick="showProductModal('Berlian', 5000000, 'assets/images/product3.png')">Detail Produk</button>
+								<button class="btn btn-primary" onclick="showProductModal('Berlian', 5000000, 'assets/images/product3.png')">Detail Produk</button>
 							</div>
 						</div>
 					</div>
