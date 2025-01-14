@@ -24,6 +24,16 @@
             color: #fff;
         }
     </style>
+    <script>
+        // Cek login sebelum halaman dimuat
+        document.addEventListener("DOMContentLoaded", function () {
+            const isLoggedIn = localStorage.getItem("isLoggedIn"); // Atau gunakan sessionStorage
+            if (!isLoggedIn || isLoggedIn !== "true") {
+                alert("Anda harus login terlebih dahulu untuk mengakses halaman ini.");
+                window.location.href = "loginregis.html"; // Arahkan ke halaman login
+            }
+        });
+    </script>
 </head>
 <body>
     <header>
