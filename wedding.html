@@ -24,7 +24,7 @@
 			<div class="links">
 				<ul>
 					<li><a href="wedding.html" class="active">Wedding</a></li>
-					<li><a href="custom.html">Custom</a></li>
+					<li><a href="women.html">Custom</a></li>
 					<li><a href="categories.html">Categories</a></li>
 					<li><a href="blog.html">Blog</a></li>
 					<li><a href="contacts.html">Contacts</a></li>
@@ -60,7 +60,6 @@
 			<div class="container">
 				<h2 class="text-center">Our Wedding Products</h2>
 				<div class="products row justify-content-center">
-					<!-- Produk 1 -->
 					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
@@ -71,8 +70,6 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- Produk 2 -->
 					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
@@ -83,8 +80,6 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- Produk 3 -->
 					<div class="product col-12 col-sm-6 col-md-4 mb-4" data-aos="fade-up">
 						<div class="bg-white shadow rounded">
 							<div class="product-image text-center">
@@ -100,7 +95,6 @@
 		</section>
 	</main>
 
-	<!-- Modal Produk -->
 	<div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
@@ -134,31 +128,28 @@
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 	<script src="library/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script>
-		AOS.init();
+		document.addEventListener('DOMContentLoaded', function () {
+			AOS.init();
 
-		let currentPricePerGram = 0;
+			let currentPricePerGram = 0;
 
-		function showProductModal(name, pricePerGram, image) {
-			currentPricePerGram = pricePerGram;
+			window.showProductModal = function (name, pricePerGram, image) {
+				currentPricePerGram = pricePerGram;
+				document.getElementById('productModalLabel').innerText = name;
+				document.getElementById('productPrice').innerText = `Harga per gram: Rp${pricePerGram.toLocaleString()}`;
+				document.getElementById('productImage').src = image;
+				document.getElementById('productWeight').value = 1;
+				calculatePrice();
+				const modal = new bootstrap.Modal(document.getElementById('productModal'));
+				modal.show();
+			};
 
-			document.getElementById('productModalLabel').innerText = name;
-			document.getElementById('productPrice').innerText = `Harga per gram: Rp${pricePerGram.toLocaleString()}`;
-			document.getElementById('productImage').src = image;
-
-			// Reset berat dan harga total
-			document.getElementById('productWeight').value = 1;
-			calculatePrice();
-
-			// Tampilkan modal
-			const modal = new bootstrap.Modal(document.getElementById('productModal'));
-			modal.show();
-		}
-
-		function calculatePrice() {
-			const weight = parseInt(document.getElementById('productWeight').value) || 1;
-			const totalPrice = weight * currentPricePerGram;
-			document.getElementById('totalPrice').innerText = `Harga: Rp${totalPrice.toLocaleString()}`;
-		}
+			window.calculatePrice = function () {
+				const weight = parseInt(document.getElementById('productWeight').value) || 1;
+				const totalPrice = weight * currentPricePerGram;
+				document.getElementById('totalPrice').innerText = `Harga: Rp${totalPrice.toLocaleString()}`;
+			};
+		});
 	</script>
 </body>
 </html>
