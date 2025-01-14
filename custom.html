@@ -101,6 +101,10 @@
 								</select>
 							</div>
 							<div class="mb-3">
+								<label for="goldMixPercentage" class="form-label">Persentase Emas (%)</label>
+								<input type="number" class="form-control" id="goldMixPercentage" name="goldMixPercentage" min="20" max="100" step="1" placeholder="Masukkan persentase emas (20% - 100%)" required>
+							</div>
+							<div class="mb-3">
 								<label for="customDetails" class="form-label">Detail Tambahan</label>
 								<textarea class="form-control" id="customDetails" name="customDetails" rows="3" placeholder="Masukkan detail tambahan (opsional)"></textarea>
 							</div>
@@ -136,13 +140,10 @@
 
 		productType.addEventListener('change', (event) => {
 			const selectedValue = event.target.value;
-			console.log('Selected value:', selectedValue); // Debugging: cek value yang dipilih
 			if (imageMap[selectedValue]) {
-				console.log('Image path:', imageMap[selectedValue]); // Debugging: cek path gambar
 				previewImage.src = imageMap[selectedValue];
 				previewImage.style.display = 'block';
 			} else {
-				console.log('Image not found for selected value'); // Debugging: jika gambar tidak ditemukan
 				previewImage.style.display = 'none';
 			}
 		});
