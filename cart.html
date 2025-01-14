@@ -179,7 +179,7 @@
         window.onload = function() {
             const token = localStorage.getItem('token'); // Cek apakah token ada di localStorage
             console.log("Token: ", token); // Menampilkan token di console
-            
+    
             if (!token) {
                 // Jika token tidak ada, tampilkan SweetAlert dan arahkan ke halaman login
                 Swal.fire({
@@ -197,7 +197,49 @@
                     }
                 });
             }
-        };        
+    
+            const cartData = [
+                {
+                    product: "Kalung Emas 24K",
+                    price: 2500000,
+                    quantity: 1,
+                    image: "images/kalung.jpg"
+                },
+                {
+                    product: "Cincin Berlian",
+                    price: 3000000,
+                    quantity: 2,
+                    image: "images/cincin.jpg"
+                }
+            ];
+    
+            // Simpan data produk ke localStorage
+            localStorage.setItem('cartData', JSON.stringify(cartData));
+    
+            // Update subtotal saat quantity berubah
+            const updateSubtotal = () => {
+                const tableRows = document.querySelectorAll("tbody tr");
+                tableRows.forEach((row, index) => {
+                    const quantity = row.querySelector("input").value;
+                    const price = row.querySelector("td:nth-child(3)").textContent.replace('Rp ', '').replace('.', '');
+                    const subtotal = parseInt(price) * quantity;
+                    row.querySelector("td:nth-child(5)").textContent = `Rp ${subtotal.toLocaleString()}`;
+                });
+            };
+    
+            // Update tombol "Update"
+            const updateButtons = document.querySelectorAll(".btn-update");
+            updateButtons.forEach((button, index) => {
+                button.addEventListener("click", () => {
+                    updateSubtotal();
+                    // Update data di localStorage
+                    const newQuantity = document.querySelectorAll("input[type='number']")[index].value;
+                    cartData[index].quantity = newQuantity;
+                    localStorage.setItem('cartData', JSON.stringify(cartData));
+                });
+            });
+        };
     </script>
+    
 </body>
 </html>

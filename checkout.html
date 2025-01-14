@@ -7,26 +7,89 @@
     <link rel="stylesheet" href="style/main.css">
     <title>Checkout - Toko Mas Duta Sumedang</title>
     <style>
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Arial', sans-serif;
+        }
+
         .checkout-container {
             max-width: 900px;
             margin: 50px auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
+
         .section-title {
             color: #007bff;
             font-weight: bold;
             margin-bottom: 20px;
+            font-size: 1.5rem;
         }
+
         .card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
+
         .btn-checkout {
             background-color: #28a745;
             color: white;
             font-weight: bold;
+            padding: 12px 40px;
+            border-radius: 50px;
+            transition: background-color 0.3s ease;
         }
+
         .btn-checkout:hover {
-            background-color: #1e7e34;
+            background-color: #218838;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+        }
+
+        .file-upload-container {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .footer-text {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .list-group-item {
+            background-color: #f8f9fa;
+            border: none;
+            padding: 12px;
+            font-size: 1.1rem;
+        }
+
+        .list-group-item span {
+            font-weight: 600;
+        }
+
+        .list-group-item:nth-child(odd) {
+            background-color: #e9ecef;
         }
     </style>
 </head>
@@ -48,7 +111,7 @@
                 <div class="row">
                     <!-- Formulir Pengiriman -->
                     <div class="col-md-6 mb-4">
-                        <div class="card p-4 shadow">
+                        <div class="card p-4">
                             <h3 class="section-title">Informasi Pengiriman</h3>
                             <form>
                                 <div class="mb-3">
@@ -69,7 +132,7 @@
 
                     <!-- Ringkasan Pesanan -->
                     <div class="col-md-6 mb-4">
-                        <div class="card p-4 shadow">
+                        <div class="card p-4">
                             <h3 class="section-title">Ringkasan Pesanan</h3>
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between">
@@ -90,7 +153,7 @@
                 </div>
 
                 <!-- Metode Pembayaran -->
-                <div class="card p-4 shadow mb-4">
+                <div class="card p-4">
                     <h3 class="section-title">Metode Pembayaran</h3>
                     <form>
                         <div class="mb-3">
@@ -105,6 +168,17 @@
                     </form>
                 </div>
 
+                <!-- Bukti Pembayaran -->
+                <div class="card p-4 file-upload-container">
+                    <h3 class="section-title">Unggah Bukti Pembayaran</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="paymentProof" class="form-label">Pilih File Bukti Pembayaran</label>
+                            <input type="file" class="form-control" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf" required>
+                        </div>
+                    </form>
+                </div>
+
                 <!-- Tombol Checkout -->
                 <div class="text-center">
                     <button type="button" class="btn btn-checkout px-4 py-2" id="completeCheckout">Selesaikan Pembayaran</button>
@@ -115,18 +189,37 @@
 
     <footer>
         <div class="container text-center">
-            <p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
+            <p class="footer-text">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
         </div>
     </footer>
 
     <script>
-        // Tambahkan event listener untuk tombol checkout
-        document.getElementById('completeCheckout').addEventListener('click', () => {
-            // Tampilkan notifikasi sukses
-            alert("Pesanan Anda berhasil dibuat! Anda akan diarahkan ke halaman konfirmasi.");
-            // Redirect ke halaman confirmation.html
-            window.location.href = "confirmation.html";
-        });
+        window.onload = function() {
+            // Mengambil data dari localStorage
+            const cartItems = JSON.parse(localStorage.getItem('cart'));
+    
+            // Menampilkan data produk di Ringkasan Pesanan
+            const orderSummaryList = document.querySelector('.list-group');
+    
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between');
+                listItem.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>Rp ${parseFloat(item.price.replace('Rp ', '').replace('.', '').trim()) * item.quantity}</span>
+                `;
+                orderSummaryList.appendChild(listItem);
+            });
+    
+            // Menampilkan total harga
+            let total = 0;
+            cartItems.forEach(item => {
+                const price = parseFloat(item.price.replace('Rp ', '').replace('.', '').trim());
+                total += price * item.quantity;
+            });
+            document.querySelector('.list-group-item.font-weight-bold span:last-child').textContent = `Rp ${total.toLocaleString()}`;
+        };
     </script>
+    
 </body>
 </html>
