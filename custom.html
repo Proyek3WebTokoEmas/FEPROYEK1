@@ -67,7 +67,7 @@
 				<h2 class="text-main text-center mb-4">Custom Jewelry Order</h2>
 				<div class="row justify-content-center">
 					<div class="col-md-8">
-						<form class="custom-form" action="confirmation.html" method="POST">
+						<form class="custom-form" id="customOrderForm">
 							<div class="mb-3">
 								<label for="productType" class="form-label">Jenis Perhiasan</label>
 								<select class="form-select" id="productType" name="productType" required>
@@ -83,9 +83,9 @@
 							<div class="mb-3">
 								<label for="goldType" class="form-label">Jenis Emas</label>
 								<select class="form-select" id="goldType" name="goldType" required>
-									<option value="24k">Emas 24K</option>
-									<option value="22k">Emas 22K</option>
-									<option value="18k">Emas 18K</option>
+									<option value="24k">Emas 24K - Rp 1.485.700</option>
+									<option value="22k">Emas 22K - Rp 3.121.420</option>
+									<option value="18k">Emas 18K - Rp 1.327.100</option>
 								</select>
 							</div>
 							<div class="mb-3">
@@ -95,9 +95,9 @@
 							<div class="mb-3">
 								<label for="mixMaterial" class="form-label">Campuran Tambahan</label>
 								<select class="form-select" id="mixMaterial" name="mixMaterial[]" required>
-									<option value="perak">Perak</option>
-									<option value="palladium">Palladium</option>
-									<option value="platinum">Platinum</option>
+									<option value="perak">Perak - Rp 500.000</option>
+									<option value="palladium">Palladium - Rp 600.000</option>
+									<option value="platinum">Platinum - Rp 700.000</option>
 								</select>
 							</div>
 							<div class="mb-3">
@@ -105,10 +105,11 @@
 								<input type="number" class="form-control" id="goldMixPercentage" name="goldMixPercentage" min="20" max="100" step="1" placeholder="Masukkan persentase emas (20% - 100%)" required>
 							</div>
 							<div class="mb-3">
-								<label for="customDetails" class="form-label">Detail Tambahan</label>
-								<textarea class="form-control" id="customDetails" name="customDetails" rows="3" placeholder="Masukkan detail tambahan (opsional)"></textarea>
+								<label for="totalPrice" class="form-label">Total Harga (IDR)</label>
+								<input type="text" class="form-control" id="totalPrice" name="totalPrice" readonly>
 							</div>
 							<div class="text-center">
+								<button type="button" class="btn btn-submit px-4 py-2" id="calculatePrice">Hitung Harga</button>
 								<button type="submit" class="btn btn-submit px-4 py-2">Pesan Sekarang</button>
 							</div>
 						</form>
@@ -130,12 +131,26 @@
 
 		const productType = document.getElementById('productType');
 		const previewImage = document.getElementById('preview-image');
+		const calculateButton = document.getElementById('calculatePrice');
+		const totalPriceInput = document.getElementById('totalPrice');
 
 		const imageMap = {
 			cincin: 'assets/images/cincin.jpg',
 			gelang: 'assets/images/gelang.jpg',
 			kalung: 'assets/images/kalung.jpg',
 			anting: 'assets/images/anting.jpg'
+		};
+
+		const goldPrices = {
+			'24k': 1485700,
+			'22k': 3121420,
+			'18k': 1327100
+		};
+
+		const materialPrices = {
+			perak: 500000,
+			palladium: 600000,
+			platinum: 700000
 		};
 
 		productType.addEventListener('change', (event) => {
@@ -145,6 +160,23 @@
 				previewImage.style.display = 'block';
 			} else {
 				previewImage.style.display = 'none';
+			}
+		});
+
+		calculateButton.addEventListener('click', () => {
+			const goldType = document.getElementById('goldType').value;
+			const goldWeight = parseFloat(document.getElementById('goldWeight').value);
+			const goldPercentage = parseFloat(document.getElementById('goldMixPercentage').value);
+			const mixMaterial = document.getElementById('mixMaterial').value;
+
+			if (goldType && goldWeight && goldPercentage && mixMaterial) {
+				const goldCost = (goldWeight * goldPrices[goldType]) * (goldPercentage / 100);
+				const materialCost = materialPrices[mixMaterial] * (1 - goldPercentage / 100);
+				const totalCost = goldCost + materialCost;
+
+				totalPriceInput.value = `Rp ${totalCost.toLocaleString('id-ID')}`;
+			} else {
+				alert('Harap lengkapi semua input untuk menghitung harga.');
 			}
 		});
 	</script>
