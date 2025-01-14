@@ -1,150 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/main.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style/main.css" />
     <title>Toko Mas Duta Sumedang Online Store | Login & Register</title>
     <style>
-        .btn-login, .btn-admin {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .btn-login:hover, .btn-admin:hover {
-            background-color: #0056b3;
-            color: #fff;
-        }
-        .btn-register {
-            background-color: #28a745;
-            color: #fff;
-        }
-        .btn-register:hover {
-            background-color: #1e7e34;
-            color: #fff;
-        }
+      /* Custom Styles */
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: #f8f9fa;
+      }
+      .main-nav {
+        background-color: #343a40;
+        padding: 15px 0;
+      }
+      .main-nav .brand h1 {
+        color: #fff;
+        font-size: 28px;
+        text-align: center;
+      }
+
+      .btn-login,
+      .btn-register {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 30px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .btn-login:hover,
+      .btn-register:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .btn-register {
+        background-color: #28a745;
+      }
+      .btn-register:hover {
+        background-color: #218838;
+      }
+      
+      .form-container {
+        display: none;
+      }
+      .form-container.active {
+        display: block;
+      }
+
+      .auth-section {
+        padding: 60px 0;
+      }
+
+      .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-body {
+        padding: 30px;
+      }
+
+      .card-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        font-weight: 500;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        transition: border 0.3s ease;
+      }
+
+      .form-control:focus {
+        border: 1px solid #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+      }
+
+      .alert-link {
+        color: #28a745;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      footer {
+        background-color: #343a40;
+        padding: 20px 0;
+      }
+
+      footer p {
+        color: #fff;
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .form-container {
-            display: none;
+          width: 100%;
         }
-        .form-container.active {
-            display: block;
-        }
-        .alert-link {
-            color: #28a745;
-            cursor: pointer;
-            text-decoration: underline;
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav class="main-nav">
-            <div class="brand text-main">
-                <a href="index.html">
-                    <h1>TOKO MAS DUTA SUMEDANG</h1>
-                </a>
-            </div>
-        </nav>
+      <nav class="main-nav">
+        <div class="brand text-main">
+          <a href="index.html">
+            <h1>TOKO MAS DUTA SUMEDANG</h1>
+          </a>
+        </div>
+      </nav>
     </header>
 
     <main>
-        <section class="auth-section py-5">
-            <div class="container">
-                <div class="text-center mb-4">
-                    <button id="showLoginForm" class="btn btn-login mx-2">Login</button>
-                    <button id="showRegisterForm" class="btn btn-register mx-2">Register</button>
-                    <button id="showAdminForm" class="btn btn-admin mx-2">Admin</button>
+      <section class="auth-section py-5">
+        <div class="container">
+          <div class="text-center mb-4">
+            <button id="showLoginForm" class="btn btn-login mx-2">Login</button>
+            <button id="showRegisterForm" class="btn btn-register mx-2">Register</button>
+          </div>
+
+          <div class="row justify-content-center">
+            <!-- Login Form -->
+            <div id="loginForm" class="col-md-6 form-container active">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h3 class="card-title text-center">Login</h3>
+                  <form id="loginFormElement">
+                    <div class="mb-3">
+                      <label for="loginEmail" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="loginPassword" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required />
+                    </div>
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-login">Login</button>
+                    </div>
+                  </form>
                 </div>
-
-                <div class="row justify-content-center">
-                    <!-- Login Form -->
-                    <div id="loginForm" class="col-md-6 form-container active">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <h3 class="card-title text-main text-center">Login</h3>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="loginEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="loginPassword" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-login">Login</button>
-                                    </div>
-                                </form>
-                                <p class="mt-3 text-center">
-                                    Belum punya akun? 
-                                    <span id="goToRegister" class="alert-link">Daftar di sini</span>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Register Form -->
-                    <div id="registerForm" class="col-md-6 form-container">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <h3 class="card-title text-main text-center">Register</h3>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="registerName" class="form-label">Nama Lengkap</label>
-                                        <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="registerEmail" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="registerPassword" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="registerConfirmPassword" class="form-label">Konfirmasi Password</label>
-                                        <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm your password" required>
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-register">Register</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Admin Login Form -->
-                    <div id="adminForm" class="col-md-6 form-container">
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <h3 class="card-title text-main text-center">Admin Login</h3>
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="adminEmail" class="form-label">Email Admin</label>
-                                        <input type="email" class="form-control" id="adminEmail" placeholder="Enter admin email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="adminPassword" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password" required>
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-admin">Login as Admin</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </section>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="col-md-6 form-container">
+              <div class="card shadow">
+                <div class="card-body">
+                  <h3 class="card-title text-center">Register</h3>
+                  <form id="registerFormElement">
+                    <div class="mb-3">
+                      <label for="registerName" class="form-label">Nama Lengkap</label>
+                      <input type="text" class="form-control" id="registerName" placeholder="Enter your full name" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerEmail" class="form-label">Email</label>
+                      <input type="email" class="form-control" id="registerEmail" placeholder="Enter your email" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerPassword" class="form-label">Password</label>
+                      <input type="password" class="form-control" id="registerPassword" placeholder="Enter your password" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="registerConfirmPassword" class="form-label">Konfirmasi Password</label>
+                      <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm your password" required />
+                    </div>
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn-register">Register</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <div class="container">
-            <p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
-        </div>
+      <div class="container">
+        <p class="text-center">
+          Toko Mas Duta Sumedang Online Store Copyright &copy; 2020
+        </p>
+      </div>
     </footer>
 
+<<<<<<< HEAD
      <script>
         const showLoginForm = document.getElementById('showLoginForm');
         const showRegisterForm = document.getElementById('showRegisterForm');
@@ -153,29 +205,87 @@
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
         const adminForm = document.getElementById('adminForm');
+=======
+    <script>
+      // Form Switching
+      const showLoginForm = document.getElementById("showLoginForm");
+      const showRegisterForm = document.getElementById("showRegisterForm");
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+>>>>>>> 3d1219ab828ebe5db20f530c2d3b160ed2c44d0d
 
-        showLoginForm.addEventListener('click', () => {
-            loginForm.classList.add('active');
-            registerForm.classList.remove('active');
-            adminForm.classList.remove('active');
+      showLoginForm.addEventListener("click", () => {
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+      });
+
+      showRegisterForm.addEventListener("click", () => {
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
+      });
+
+      // Login and Register Form Submission
+      document
+        .getElementById("loginFormElement")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+
+          try {
+            const response = await fetch("http://localhost:8081/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              alert("Login berhasil!");
+              localStorage.setItem("token", result.token);
+              window.location.href = "http://127.0.0.1:5503/index.html";
+            } else {
+              alert(result.message || "Login gagal!");
+            }
+          } catch (error) {
+            console.error("Error saat login:", error);
+            alert("Terjadi kesalahan. Silakan coba lagi.");
+          }
         });
 
-        showRegisterForm.addEventListener('click', () => {
-            registerForm.classList.add('active');
-            loginForm.classList.remove('active');
-            adminForm.classList.remove('active');
-        });
+      document
+        .getElementById("registerFormElement")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const name = document.getElementById("registerName").value;
+          const email = document.getElementById("registerEmail").value;
+          const password = document.getElementById("registerPassword").value;
 
-        showAdminForm.addEventListener('click', () => {
-            adminForm.classList.add('active');
-            loginForm.classList.remove('active');
-            registerForm.classList.remove('active');
-        });
+          try {
+            const response = await fetch("http://localhost:8081/api/register", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, email, password }),
+            });
 
-        goToRegister.addEventListener('click', () => {
-            registerForm.classList.add('active');
-            loginForm.classList.remove('active');
+            const result = await response.json();
+
+            if (response.ok) {
+              alert("Registrasi berhasil! Silakan cek email untuk link verifikasi.");
+            } else {
+              alert(result.message || "Registrasi gagal!");
+            }
+          } catch (error) {
+            console.error("Error saat registrasi:", error);
+            alert("Terjadi kesalahan. Silakan coba lagi.");
+          }
         });
+<<<<<<< HEAD
     </script> 
 </body>
+=======
+    </script>
+  </body>
+>>>>>>> 3d1219ab828ebe5db20f530c2d3b160ed2c44d0d
 </html>

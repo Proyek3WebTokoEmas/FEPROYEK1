@@ -6,22 +6,94 @@
     <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/main.css">
     <title>Toko Mas Duta Sumedang Online Store | Cart</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        .btn-update {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .main-nav {
+            background-color: #343a40;
+            padding: 10px;
+        }
+
+        .main-nav .brand h1 {
+            color: #fff;
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .cart-section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .cart-section h2 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .table th {
             background-color: #007bff;
             color: #fff;
         }
-        .btn-update:hover {
-            background-color: #0056b3;
-            color: #fff;
+
+        .table img {
+            max-width: 50px;
+            margin-right: 10px;
         }
+
+        .btn {
+            border-radius: 20px;
+            padding: 8px 15px;
+        }
+
+        .btn-update {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+        }
+
         .btn-remove {
             background-color: #dc3545;
             color: #fff;
+            border: none;
         }
-        .btn-remove:hover {
-            background-color: #a71d2a;
+
+        .btn-checkout {
+            background-color: #28a745;
             color: #fff;
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            border-radius: 25px;
+        }
+
+        .total-section {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .total-section h4 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -43,7 +115,7 @@
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
-                            <tr class="text-center">
+                            <tr>
                                 <th>No</th>
                                 <th>Produk</th>
                                 <th>Harga</th>
@@ -53,12 +125,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Contoh data produk -->
-                            <tr class="text-center">
+                            <tr>
                                 <td>1</td>
                                 <td>
-                                    <img src="images/kalung.jpg" alt="Kalung" width="80">
-                                    <p class="mt-2">Kalung Emas 24K</p>
+                                    <img src="images/kalung.jpg" alt="Kalung">
+                                    <p>Kalung Emas 24K</p>
                                 </td>
                                 <td>Rp 2.500.000</td>
                                 <td>
@@ -70,11 +141,11 @@
                                     <button class="btn btn-remove btn-sm">Hapus</button>
                                 </td>
                             </tr>
-                            <tr class="text-center">
+                            <tr>
                                 <td>2</td>
                                 <td>
-                                    <img src="images/cincin.jpg" alt="Cincin" width="80">
-                                    <p class="mt-2">Cincin Berlian</p>
+                                    <img src="images/cincin.jpg" alt="Cincin">
+                                    <p>Cincin Berlian</p>
                                 </td>
                                 <td>Rp 3.000.000</td>
                                 <td>
@@ -89,9 +160,10 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="text-end mt-4">
+
+                <div class="total-section mt-4">
                     <h4>Total: Rp 8.500.000</h4>
-                    <a href="checkout.html" class="btn btn-success btn-lg mt-2">Checkout</a>
+                    <a href="checkout.html" class="btn btn-checkout">Checkout</a>
                 </div>
             </div>
         </section>
@@ -99,8 +171,75 @@
 
     <footer>
         <div class="container">
-            <p class="text-second text-center">Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
+            <p>Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
         </div>
     </footer>
+
+    <script>
+        window.onload = function() {
+            const token = localStorage.getItem('token'); // Cek apakah token ada di localStorage
+            console.log("Token: ", token); // Menampilkan token di console
+    
+            if (!token) {
+                // Jika token tidak ada, tampilkan SweetAlert dan arahkan ke halaman login
+                Swal.fire({
+                    title: 'Harap Login Terlebih Dahulu',
+                    text: 'Anda harus login untuk mengakses halaman ini.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'loginregis.html'; // Arahkan ke halaman login
+                    } else {
+                        window.location.href = 'index.html'; // Jika batal, arahkan ke halaman utama
+                    }
+                });
+            }
+    
+            const cartData = [
+                {
+                    product: "Kalung Emas 24K",
+                    price: 2500000,
+                    quantity: 1,
+                    image: "images/kalung.jpg"
+                },
+                {
+                    product: "Cincin Berlian",
+                    price: 3000000,
+                    quantity: 2,
+                    image: "images/cincin.jpg"
+                }
+            ];
+    
+            // Simpan data produk ke localStorage
+            localStorage.setItem('cartData', JSON.stringify(cartData));
+    
+            // Update subtotal saat quantity berubah
+            const updateSubtotal = () => {
+                const tableRows = document.querySelectorAll("tbody tr");
+                tableRows.forEach((row, index) => {
+                    const quantity = row.querySelector("input").value;
+                    const price = row.querySelector("td:nth-child(3)").textContent.replace('Rp ', '').replace('.', '');
+                    const subtotal = parseInt(price) * quantity;
+                    row.querySelector("td:nth-child(5)").textContent = `Rp ${subtotal.toLocaleString()}`;
+                });
+            };
+    
+            // Update tombol "Update"
+            const updateButtons = document.querySelectorAll(".btn-update");
+            updateButtons.forEach((button, index) => {
+                button.addEventListener("click", () => {
+                    updateSubtotal();
+                    // Update data di localStorage
+                    const newQuantity = document.querySelectorAll("input[type='number']")[index].value;
+                    cartData[index].quantity = newQuantity;
+                    localStorage.setItem('cartData', JSON.stringify(cartData));
+                });
+            });
+        };
+    </script>
+    
 </body>
 </html>
