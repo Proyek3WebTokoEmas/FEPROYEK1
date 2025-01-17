@@ -736,3 +736,18 @@ footer .footer-item-content a.ig-icon {
 	}
 
 }
+
+#logoutButton {
+	background-color: #f04d4d;
+	color: #fff;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-left: 10px;
+  }
+  
+  #logoutButton:hover {
+	background-color: #d43f3f;
+  }
+  
