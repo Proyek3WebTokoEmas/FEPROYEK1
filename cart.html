@@ -148,6 +148,7 @@
                                 <th>Jumlah</th>
                                 <th>Total Harga</th>
                                 <th>Status Pembayaran</th>
+                                <th>Checkout</th>
                             </tr>
                         </thead>
                         <tbody id="cart-table-body">
@@ -172,7 +173,6 @@
 
     <script>
         window.onload = function () {
-            // Ambil token dari localStorage (untuk login check)
             const token = localStorage.getItem("authToken");
 
             if (!token) {
@@ -192,7 +192,6 @@
                 });
             }
 
-            // Ambil data dari backend (API Golang)
             fetch("https://be-3.vercel.app/api/protected/orders", {
                 method: "GET",
                 headers: {
@@ -201,20 +200,19 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Data Orders dari Backend:", data);
-                const tableBody = document.querySelector("tbody");
-                tableBody.innerHTML = "";  // Clear the table body before inserting new rows
+                const tableBody = document.querySelector("#cart-table-body");
+                tableBody.innerHTML = "";
 
                 if (data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='5' class='text-center'>Tidak ada data pesanan.</td></tr>";
+                    tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
                 } else {
-                    let totalHarga = 0; // Variabel untuk menghitung total harga
+                    let totalHarga = 0;
                     
                     data.forEach((item, index) => {
-                        const quantity = item.quantity || 1; // Default 1 jika quantity undefined
-                        const subtotal = item.total_harga || 0; // Gunakan total_harga dari data backend
+                        const quantity = item.quantity || 1;
+                        const subtotal = item.total_harga || 0;
 
-                        totalHarga += subtotal; // Tambahkan subtotal ke total harga
+                        totalHarga += subtotal;
 
                         const statusPembayaran = item.status_pembayaran ? "Sudah Terbayar" : "Belum Terbayar";
 
@@ -231,16 +229,17 @@
                                 <td>${quantity}</td>
                                 <td>Rp ${subtotal.toLocaleString()}</td>
                                 <td>${statusPembayaran}</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm">Checkout</button>
+                                </td>
                             </tr>
                         `;
                         tableBody.innerHTML += row;
                     });
 
-                    // Update total harga setelah data dimuat
                     document.querySelector(".total-section h4").textContent = `Total: Rp ${totalHarga.toLocaleString()}`;
                 }
-            })
-            
+            });
         };
     </script>
 </body>
