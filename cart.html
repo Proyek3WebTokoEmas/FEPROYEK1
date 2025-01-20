@@ -193,7 +193,7 @@
             }
 
             // Ambil data dari backend (API Golang)
-            fetch("http://localhost:8081/api/protected/orders", {
+            fetch("https://be-3.vercel.app/api/protected/orders", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
