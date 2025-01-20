@@ -10,90 +10,117 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         .main-nav {
-            background-color: #343a40;
-            padding: 10px;
+            background-color: #333;
+            padding: 15px;
+            text-align: center;
         }
 
-        .main-nav .brand h1 {
+        .main-nav h1 {
             color: #fff;
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin: 0;
+            font-weight: 500;
         }
 
         .cart-section {
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         .cart-section h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
             color: #333;
-            font-size: 2rem;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .table th, .table td {
             vertical-align: middle;
-            text-align: center;
+            text-align: left;
+            padding: 15px;
         }
 
         .table th {
             background-color: #007bff;
             color: #fff;
+            font-weight: 600;
+        }
+
+        .table tr {
+            border-bottom: 1px solid #eee;
         }
 
         .table img {
-            max-width: 50px;
-            margin-right: 10px;
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 15px;
         }
 
-        .btn {
-            border-radius: 20px;
-            padding: 8px 15px;
-        }
-
-        .btn-update {
-            background-color: #ffc107;
-            color: #fff;
-            border: none;
-        }
-
-        .btn-remove {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
+        .table td {
+            color: #555;
         }
 
         .btn-checkout {
             background-color: #28a745;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             padding: 12px 30px;
             border-radius: 25px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-checkout:hover {
+            background-color: #218838;
         }
 
         .total-section {
             margin-top: 30px;
-            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .total-section h4 {
             font-size: 1.5rem;
+            font-weight: 600;
             color: #333;
         }
 
         footer {
-            background-color: #343a40;
+            background-color: #333;
             color: #fff;
             text-align: center;
             padding: 20px;
             margin-top: 50px;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .cart-section {
+                padding: 20px;
+            }
+
+            .main-nav h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -109,60 +136,28 @@
     </header>
 
     <main>
-        <section class="cart-section py-5">
+        <section class="cart-section">
             <div class="container">
-                <h2 class="text-main text-center mb-4">Keranjang Belanja</h2>
+                <h2 class="text-center">Keranjang Belanja</h2>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Produk</th>
-                                <th>Harga</th>
                                 <th>Jumlah</th>
-                                <th>Subtotal</th>
-                                <th>Aksi</th>
+                                <th>Total Harga</th>
+                                <th>Status Pembayaran</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <img src="images/kalung.jpg" alt="Kalung">
-                                    <p>Kalung Emas 24K</p>
-                                </td>
-                                <td>Rp 2.500.000</td>
-                                <td>
-                                    <input type="number" class="form-control w-50 mx-auto" value="1" min="1">
-                                </td>
-                                <td>Rp 2.500.000</td>
-                                <td>
-                                    <button class="btn btn-update btn-sm">Update</button>
-                                    <button class="btn btn-remove btn-sm">Hapus</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <img src="images/cincin.jpg" alt="Cincin">
-                                    <p>Cincin Berlian</p>
-                                </td>
-                                <td>Rp 3.000.000</td>
-                                <td>
-                                    <input type="number" class="form-control w-50 mx-auto" value="2" min="1">
-                                </td>
-                                <td>Rp 6.000.000</td>
-                                <td>
-                                    <button class="btn btn-update btn-sm">Update</button>
-                                    <button class="btn btn-remove btn-sm">Hapus</button>
-                                </td>
-                            </tr>
+                        <tbody id="cart-table-body">
+                            <!-- Cart items will be populated here -->
                         </tbody>
                     </table>
                 </div>
 
-                <div class="total-section mt-4">
-                    <h4>Total: Rp 8.500.000</h4>
+                <div class="total-section">
+                    <h4>Total: Rp 0</h4>
                     <a href="checkout.html" class="btn btn-checkout">Checkout</a>
                 </div>
             </div>
@@ -176,70 +171,77 @@
     </footer>
 
     <script>
-        window.onload = function() {
-            const token = localStorage.getItem('token'); // Cek apakah token ada di localStorage
-            console.log("Token: ", token); // Menampilkan token di console
-    
+        window.onload = function () {
+            // Ambil token dari localStorage (untuk login check)
+            const token = localStorage.getItem("authToken");
+
             if (!token) {
-                // Jika token tidak ada, tampilkan SweetAlert dan arahkan ke halaman login
                 Swal.fire({
-                    title: 'Harap Login Terlebih Dahulu',
-                    text: 'Anda harus login untuk mengakses halaman ini.',
-                    icon: 'warning',
+                    title: "Harap Login Terlebih Dahulu",
+                    text: "Anda harus login untuk mengakses halaman ini.",
+                    icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: 'Login',
-                    cancelButtonText: 'Batal',
+                    confirmButtonText: "Login",
+                    cancelButtonText: "Batal",
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'loginregis.html'; // Arahkan ke halaman login
+                        window.location.href = "loginregis.html";
                     } else {
-                        window.location.href = 'index.html'; // Jika batal, arahkan ke halaman utama
+                        window.location.href = "index.html";
                     }
                 });
             }
-    
-            const cartData = [
-                {
-                    product: "Kalung Emas 24K",
-                    price: 2500000,
-                    quantity: 1,
-                    image: "images/kalung.jpg"
-                },
-                {
-                    product: "Cincin Berlian",
-                    price: 3000000,
-                    quantity: 2,
-                    image: "images/cincin.jpg"
+
+            // Ambil data dari backend (API Golang)
+            fetch("https://be-3.vercel.app/api/protected/orders", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
                 }
-            ];
-    
-            // Simpan data produk ke localStorage
-            localStorage.setItem('cartData', JSON.stringify(cartData));
-    
-            // Update subtotal saat quantity berubah
-            const updateSubtotal = () => {
-                const tableRows = document.querySelectorAll("tbody tr");
-                tableRows.forEach((row, index) => {
-                    const quantity = row.querySelector("input").value;
-                    const price = row.querySelector("td:nth-child(3)").textContent.replace('Rp ', '').replace('.', '');
-                    const subtotal = parseInt(price) * quantity;
-                    row.querySelector("td:nth-child(5)").textContent = `Rp ${subtotal.toLocaleString()}`;
-                });
-            };
-    
-            // Update tombol "Update"
-            const updateButtons = document.querySelectorAll(".btn-update");
-            updateButtons.forEach((button, index) => {
-                button.addEventListener("click", () => {
-                    updateSubtotal();
-                    // Update data di localStorage
-                    const newQuantity = document.querySelectorAll("input[type='number']")[index].value;
-                    cartData[index].quantity = newQuantity;
-                    localStorage.setItem('cartData', JSON.stringify(cartData));
-                });
-            });
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Data Orders dari Backend:", data);
+                const tableBody = document.querySelector("tbody");
+                tableBody.innerHTML = "";  // Clear the table body before inserting new rows
+
+                if (data.length === 0) {
+                    tableBody.innerHTML = "<tr><td colspan='5' class='text-center'>Tidak ada data pesanan.</td></tr>";
+                } else {
+                    let totalHarga = 0; // Variabel untuk menghitung total harga
+                    
+                    data.forEach((item, index) => {
+                        const quantity = item.quantity || 1; // Default 1 jika quantity undefined
+                        const subtotal = item.total_harga || 0; // Gunakan total_harga dari data backend
+
+                        totalHarga += subtotal; // Tambahkan subtotal ke total harga
+
+                        const statusPembayaran = item.status_pembayaran ? "Sudah Terbayar" : "Belum Terbayar";
+
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>
+                                    <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
+                                    <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
+                                    <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
+                                    <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
+                                    <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
+                                </td>
+                                <td>${quantity}</td>
+                                <td>Rp ${subtotal.toLocaleString()}</td>
+                                <td>${statusPembayaran}</td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+
+                    // Update total harga setelah data dimuat
+                    document.querySelector(".total-section h4").textContent = `Total: Rp ${totalHarga.toLocaleString()}`;
+                }
+            })
+            
         };
     </script>
-    
 </body>
 </html>
