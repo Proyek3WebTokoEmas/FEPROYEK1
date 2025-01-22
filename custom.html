@@ -242,128 +242,89 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-    async function fetchMetalPrice() {
-      const apiKey = '8edbc89e220f01caa48384fce2f5683b'; // API Key Anda
-      try {
-        const response = await fetch('https://api.metalpriceapi.com/v1/latest', {
-          headers: {
-            'X-API-KEY': apiKey,
-            'Content-Type': 'application/json',
-          },
-        });
-        const data = await response.json();
-        const xauRate = data.rates['XAU']; // Nilai XAU dari API
-        const idrRate = data.rates['IDR']; // Kurs USD ke IDR dari API
+      async function fetchMetalPrice() {
+        const apiKey = '8edbc89e220f01caa48384fce2f5683b'; // API Key Anda
+        try {
+          const response = await fetch('https://api.metalpriceapi.com/v1/latest', {
+            headers: {
+              'X-API-KEY': apiKey,
+              'Content-Type': 'application/json',
+            },
+          });
+          const data = await response.json();
+          const xauRate = data.rates['XAU']; // Nilai XAU dari API
+          const idrRate = data.rates['IDR']; // Kurs USD ke IDR dari API
     
-        // Harga emas per troy ounce dalam IDR
-        const goldPricePerOunceInIDR = (1 / xauRate) * idrRate;
+          // Harga emas per troy ounce dalam IDR
+          const goldPricePerOunceInIDR = (1 / xauRate) * idrRate;
     
-        // Harga emas per gram dalam IDR
-        const goldPricePerGramInIDR = goldPricePerOunceInIDR / 31.1035;
+          // Harga emas per gram dalam IDR
+          const goldPricePerGramInIDR = goldPricePerOunceInIDR / 31.1035;
     
-        // Update global harga emas
-        window.goldPricePerGram = goldPricePerGramInIDR;
-      } catch (error) {
-        console.error('Error fetching metal price:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Gagal Mendapatkan Data Harga Emas',
-          text: 'Pastikan koneksi internet stabil.',
-        });
-      }
-    }
-    
-    // Mengecek apakah token kadaluarsa
-    function isTokenExpired(token) {
-      if (!token) return true;
-    
-      const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT untuk mendapatkan klaim
-      const expirationTime = payload.exp * 1000; // Waktu kadaluarsa dalam milidetik
-      const currentTime = Date.now();
-    
-      return currentTime > expirationTime;
-    }
-    
-    // Menghitung Harga
-    document.getElementById('calculatePrice').addEventListener('click', () => {
-      const goldType = document.getElementById('goldType').value;
-      const goldWeight = parseFloat(document.getElementById('goldWeight').value) || 0;
-      const mixMaterial = document.getElementById('mixMaterial').value;
-      const goldMixPercentage = parseFloat(document.getElementById('goldMixPercentage').value) || 0;
-    
-      const goldPurity = { '24k': 1, '22k': 0.916, '18k': 0.75 };
-      const mixPrices = { perak: 500000, palladium: 600000, platinum: 700000 };
-    
-      if (goldWeight <= 0 || goldMixPercentage < 20 || goldMixPercentage > 100 || !window.goldPricePerGram) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Data tidak valid',
-          text: 'Silakan masukkan berat emas, persentase emas, dan pastikan harga emas diperbarui.',
-        });
-        return;
+          // Update global harga emas
+          window.goldPricePerGram = goldPricePerGramInIDR;
+        } catch (error) {
+          console.error('Error fetching metal price:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Mendapatkan Data Harga Emas',
+            text: 'Pastikan koneksi internet stabil.',
+          });
+        }
       }
     
-      const goldPrice =
-        goldWeight *
-        goldPurity[goldType] *
-        (goldMixPercentage / 100) *
-        window.goldPricePerGram;
-      const mixPrice = mixPrices[mixMaterial] || 0;
-      const totalPrice = goldPrice + mixPrice;
+      function isTokenExpired(token) {
+        if (!token) return true;
     
-      document.getElementById('totalPrice').value = `Rp ${totalPrice.toLocaleString('id-ID')}`;
-    });
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
+        const expirationTime = payload.exp * 1000;
+        const currentTime = Date.now();
     
-    // Submit Form ke Backend
-    document.getElementById('customOrderForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-    
-      const token = localStorage.getItem('authToken'); // Mengambil token dari localStorage
-    
-      // Validasi token kadaluarsa
-      if (!token || isTokenExpired(token)) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Token kadaluarsa',
-          text: 'Silakan login kembali.',
-        }).then(() => {
-          window.location.href = 'loginregis.html';
-        });
-        return;
+        return currentTime > expirationTime;
       }
     
-      // Ambil data form
-      const productType = document.getElementById('productType').value;
-      const goldType = document.getElementById('goldType').value;
-      const goldWeight = parseFloat(document.getElementById('goldWeight').value);
-      const mixMaterial = document.getElementById('mixMaterial').value;
-      const goldMixPercentage = parseFloat(document.getElementById('goldMixPercentage').value);
-      const totalPrice =
-        parseFloat(
-          document.getElementById('totalPrice').value.replace('Rp ', '').replace(/\./g, '')
-        ) || 0;
+      function getUserIdFromToken(token) {
+        if (!token) return null;
     
-      const orderData = {
-        jenis_perhiasan: productType,
-        jenis_emas: goldType,
-        berat_emas: goldWeight,
-        campuran_tambahan: mixMaterial,
-        persentase_emas: goldMixPercentage,
-        total_harga: totalPrice,
-      };
+        const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
+        return payload.email; // Menggunakan email sebagai identifikasi user unik
+      }
     
-      try {
-        // Kirim data ke server
-        const response = await fetch('https://be-3.vercel.app/api/protected/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`, // Kirim token di header Authorization
-          },
-          body: JSON.stringify(orderData),
-        });
+      document.getElementById('calculatePrice').addEventListener('click', () => {
+        const goldType = document.getElementById('goldType').value;
+        const goldWeight = parseFloat(document.getElementById('goldWeight').value) || 0;
+        const mixMaterial = document.getElementById('mixMaterial').value;
+        const goldMixPercentage = parseFloat(document.getElementById('goldMixPercentage').value) || 0;
     
-        if (response.status === 401) {
+        const goldPurity = { '24k': 1, '22k': 0.916, '18k': 0.75 };
+        const mixPrices = { perak: 500000, palladium: 600000, platinum: 700000 };
+    
+        if (goldWeight <= 0 || goldMixPercentage < 20 || goldMixPercentage > 100 || !window.goldPricePerGram) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Data tidak valid',
+            text: 'Silakan masukkan berat emas, persentase emas, dan pastikan harga emas diperbarui.',
+          });
+          return;
+        }
+    
+        const goldPrice =
+          goldWeight *
+          goldPurity[goldType] *
+          (goldMixPercentage / 100) *
+          window.goldPricePerGram;
+        const mixPrice = mixPrices[mixMaterial] || 0;
+        const totalPrice = goldPrice + mixPrice;
+    
+        document.getElementById('totalPrice').value = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+      });
+    
+      document.getElementById('customOrderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+    
+        const token = localStorage.getItem('authToken');
+    
+        if (!token || isTokenExpired(token)) {
           Swal.fire({
             icon: 'error',
             title: 'Token kadaluarsa',
@@ -374,35 +335,82 @@
           return;
         }
     
-        if (response.ok) {
-          const data = await response.json();
-          Swal.fire({
-            icon: 'success',
-            title: 'Pesanan Berhasil',
-            text: `Pesanan berhasil dibuat! ID Pesanan: ${data.id}`,
+        const productType = document.getElementById('productType').value;
+        const goldType = document.getElementById('goldType').value;
+        const goldWeight = parseFloat(document.getElementById('goldWeight').value);
+        const mixMaterial = document.getElementById('mixMaterial').value;
+        const goldMixPercentage = parseFloat(document.getElementById('goldMixPercentage').value);
+        const totalPrice =
+          parseFloat(
+            document.getElementById('totalPrice').value.replace('Rp ', '').replace(/\./g, '')
+          ) || 0;
+    
+        const orderData = {
+          jenis_perhiasan: productType,
+          jenis_emas: goldType,
+          berat_emas: goldWeight,
+          campuran_tambahan: mixMaterial,
+          persentase_emas: goldMixPercentage,
+          total_harga: totalPrice,
+        };
+    
+        try {
+          const response = await fetch('https://be-3.vercel.app/api/protected/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(orderData),
           });
-          document.getElementById('customOrderForm').reset(); // Reset form
-        } else {
-          const errorMessage = await response.text();
+    
+          if (response.status === 401) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Token kadaluarsa',
+              text: 'Silakan login kembali.',
+            }).then(() => {
+              window.location.href = 'loginregis.html';
+            });
+            return;
+          }
+    
+          if (response.ok) {
+            const data = await response.json();
+            const userId = getUserIdFromToken(token);
+    
+            // Simpan data pesanan ke localStorage berdasarkan userId
+            const userOrders = JSON.parse(localStorage.getItem(`orders_${userId}`)) || [];
+            userOrders.push(data);
+            localStorage.setItem(`orders_${userId}`, JSON.stringify(userOrders));
+    
+            Swal.fire({
+              icon: 'success',
+              title: 'Pesanan Berhasil',
+              text: `Pesanan berhasil dibuat! ID Pesanan: ${data.id}`,
+            });
+            document.getElementById('customOrderForm').reset();
+          } else {
+            const errorMessage = await response.text();
+            Swal.fire({
+              icon: 'error',
+              title: 'Kesalahan Server',
+              text: `Terjadi kesalahan: ${errorMessage}`,
+            });
+          }
+        } catch (error) {
           Swal.fire({
             icon: 'error',
-            title: 'Kesalahan Server',
-            text: `Terjadi kesalahan: ${errorMessage}`,
+            title: 'Kesalahan',
+            text: 'Tidak dapat terhubung ke server.',
           });
+          console.error('Error:', error);
         }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Kesalahan',
-          text: 'Tidak dapat terhubung ke server.',
-        });
-        console.error('Error:', error);
-      }
-    });
+      });
     
-    // Memuat harga emas saat halaman pertama kali diakses
-    fetchMetalPrice();
-  </script>
+      fetchMetalPrice();
+    </script>
+    
 
   </body>
 </html>
