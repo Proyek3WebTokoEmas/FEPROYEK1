@@ -8,110 +8,111 @@
     <title>Toko Mas Duta Sumedang Online Store | Cart</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main-nav {
-            background-color: #333;
-            padding: 15px;
-            text-align: center;
-        }
-
-        .main-nav h1 {
-            color: #fff;
-            font-size: 2rem;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .cart-section {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            margin-top: 40px;
-        }
-
-        .cart-section h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 25px;
-        }
-
-        .table th, .table td {
-            vertical-align: middle;
-            text-align: left;
-            padding: 15px;
-        }
-
-        .table th {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .table tr {
-            border-bottom: 1px solid #eee;
-        }
-
-        .table img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .table td {
-            color: #555;
-        }
-
-        .btn-checkout {
-            background-color: #28a745;
-            color: #fff;
-            font-size: 1.1rem;
-            padding: 12px 30px;
-            border-radius: 25px;
-            text-transform: uppercase;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-checkout:hover {
-            background-color: #218838;
-        }
-
-        .total-section {
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-section h4 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        footer p {
-            font-size: 0.9rem;
-            margin: 0;
-        }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .main-nav {
+        background: linear-gradient(135deg, #ffb400, #ff8400);
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .main-nav h1 {
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+    }
+    
+    .cart-section {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        margin-top: 40px;
+    }
+    
+    .cart-section h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ff8400;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .table th {
+        background-color: #ff8400;
+        color: white;
+        font-weight: 700;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .table td {
+        text-align: center;
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    
+    .btn-checkout {
+        background: linear-gradient(135deg, #28a745, #218838);
+        color: #fff;
+        font-size: 1.2rem;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-align: center;
+        display: inline-block;
+    }
+    
+    .btn-checkout:hover {
+        background: linear-gradient(135deg, #218838, #1e7e34);
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .total-section {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffb400;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .total-section h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #333;
+    }
+    
+    footer {
+        background: #333;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        margin-top: 50px;
+        font-size: 1rem;
+        font-weight: 500;
+    }
 
         @media (max-width: 768px) {
             .cart-section {
@@ -176,92 +177,99 @@
         const token = localStorage.getItem("authToken");
     
         if (!token) {
-          Swal.fire({
-            title: "Harap Login Terlebih Dahulu",
-            text: "Anda harus login untuk mengakses halaman ini.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Login",
-            cancelButtonText: "Batal",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "loginregis.html";
-            } else {
-              window.location.href = "index.html";
-            }
-          });
-          return;
+            Swal.fire({
+                title: "Harap Login Terlebih Dahulu",
+                text: "Anda harus login untuk mengakses halaman ini.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Login",
+                cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "loginregis.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            });
+            return;
         }
     
-        // Mendapatkan User ID dari token JWT
         const userId = getUserIdFromToken(token);
     
-        // Mengambil pesanan hanya untuk user yang sedang login
-        fetch(`https://be-3.vercel.app/api/protected/orders/${userId}`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
+        fetch(`https://be-3.vercel.app/orders/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
         })
-          .then(response => response.json())
-          .then(data => {
+        .then(response => response.json())
+        .then(data => {
             const tableBody = document.querySelector("#cart-table-body");
             tableBody.innerHTML = "";
     
             if (data.length === 0) {
-              tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
             } else {
-              let totalHarga = 0;
+                let totalHarga = 0;
     
-              data.forEach((item, index) => {
-                const quantity = item.quantity || 1;
-                const subtotal = item.total_harga || 0;
+                data.forEach((item, index) => {
+                    const quantity = item.quantity || 1;
+                    const subtotal = item.total_harga || 0;
+                    totalHarga += subtotal;
+                    const statusPembayaran = item.status_pembayaran ? "Sudah Terbayar" : "Belum Terbayar";
     
-                totalHarga += subtotal;
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                      <td>${index + 1}</td>
+                      <td>
+                        <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
+                        <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
+                        <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
+                        <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
+                        <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
+                      </td>
+                      <td>${quantity}</td>
+                      <td>Rp ${subtotal.toLocaleString()}</td>
+                      <td>${statusPembayaran}</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
+                      </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
     
-                const statusPembayaran = item.status_pembayaran ? "Sudah Terbayar" : "Belum Terbayar";
+                // Tombol Checkout
+                document.querySelectorAll(".btn-checkout").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const orderId = this.getAttribute("data-orderid");
+                        const totalHarga = this.getAttribute("data-total"); // Ambil total harga dari tombol
     
-                const row = `
-                  <tr>
-                    <td>${index + 1}</td>
-                    <td>
-                      <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
-                      <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
-                      <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
-                      <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
-                      <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
-                    </td>
-                    <td>${quantity}</td>
-                    <td>Rp ${subtotal.toLocaleString()}</td>
-                    <td>${statusPembayaran}</td>
-                    <td>
-                      <button class="btn btn-primary btn-sm">Checkout</button>
-                    </td>
-                  </tr>
-                `;
-                tableBody.innerHTML += row;
-              });
+                        // Simpan total harga dan order ID ke localStorage
+                        localStorage.setItem("cartTotal", totalHarga);
+                        localStorage.setItem("orderId", orderId);
     
-              document.querySelector(".total-section h4").textContent = `Total: Rp ${totalHarga.toLocaleString()}`;
+                        // Arahkan ke halaman pembayaran
+                        window.location.href = `midtrans.html?order_id=${orderId}`;
+                    });
+                });
+    
             }
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             Swal.fire({
-              icon: 'error',
-              title: 'Kesalahan',
-              text: 'Tidak dapat terhubung ke server.',
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Tidak dapat terhubung ke server.',
             });
             console.error('Error:', error);
-          });
-      };
+        });
+    };
     
-      // Fungsi untuk mendapatkan User ID dari token JWT
-      function getUserIdFromToken(token) {
+    function getUserIdFromToken(token) {
         if (!token) return null;
-        const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
-        return payload.user_id; // Menggunakan user_id dari klaim JWT
-      }
-    </script>
-     
+        const payload = JSON.parse(atob(token.split('.')[1])); 
+        return payload.user_id; 
+    }    
+    </script>    
 </body>
 </html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran Toko Emas</title>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="YOUR_CLIENT_KEY"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert CDN -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #FFD700, #FFF3C6);
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            border: 2px solid #FFD700;
+        }
+
+        h2 {
+            color: #B8860B;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            color: #8B7500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #FFD700;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            background: #FFD700;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #B8860B;
+        }
+
+        .logo {
+            width: 100px;
+            margin-bottom: 10px;
+        }
+
+        #gross_amount_display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #B8860B;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Ambil total harga dari localStorage dan set ke input gross_amount
+            const totalHarga = localStorage.getItem("cartTotal") || "0";
+            
+            // Format totalHarga menjadi format Rupiah dengan titik pemisah ribuan
+            const formattedTotal = formatRupiah(totalHarga);
+            
+            // Set nilai asli ke input gross_amount
+            const grossAmountInput = document.getElementById("gross_amount");
+            grossAmountInput.value = totalHarga;  // Set nilai asli untuk keperluan pengiriman data
+            grossAmountInput.setAttribute("readonly", true); // Menonaktifkan input supaya tidak bisa diubah
+            
+            // Menampilkan total harga yang diformat dalam Rupiah dengan titik pemisah ribuan
+            document.getElementById("gross_amount_display").innerText = formattedTotal;
+        
+            // Tampilkan format yang sama pada tabel jumlah pembayaran
+            const paymentTableAmount = document.getElementById("payment-amount");
+            if (paymentTableAmount) {
+                paymentTableAmount.innerText = formattedTotal; // Menampilkan nominal yang sudah diformat
+            }
+            
+            // Event listener untuk tombol bayar
+            document.getElementById("pay-button").addEventListener("click", async function () {
+                const grossAmount = parseInt(grossAmountInput.value);
+                const firstName = document.getElementById("first_name").value;
+                const email = document.getElementById("email").value;
+                const phone = document.getElementById("phone").value;
+            
+                // Validasi inputan
+                if (!firstName || !email || !phone) {
+                    Swal.fire("Error", "Semua kolom harus diisi!", "warning");
+                    return;
+                }
+            
+                try {
+                    const response = await fetch("http://localhost:8081/payment", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            gross_amount: grossAmount,
+                            customer_details: { name: firstName, email, phone }
+                        })
+                    });
+            
+                    const data = await response.json();
+            
+                    // Pastikan respons mengandung redirect_url
+                    if (data.redirect_url) {
+                        // Redirect ke URL Midtrans untuk melakukan pembayaran
+                        window.location.href = data.redirect_url; // Redirect ke URL yang diberikan oleh Midtrans
+                    } else {
+                        Swal.fire("Kesalahan", "URL pembayaran tidak ditemukan", "error");
+                    }
+                } catch (error) {
+                    Swal.fire("Kesalahan", "Terjadi kesalahan saat memproses pembayaran.", "error");
+                    console.error("Error:", error);
+                }
+            });
+        });
+        
+        // Fungsi untuk memformat angka ke format Rupiah dengan titik pemisah ribuan dan koma untuk desimal
+        function formatRupiah(angka) {
+            const numberString = angka.toString().replace(/[^,\d]/g, ''); // Menghapus karakter selain angka
+            const split = numberString.split(',');
+            const sisa = split[0].length % 3; // Menghitung sisa bagi untuk pemisahan ribuan
+            let rupiah = split[0].substr(0, sisa); // Menambahkan angka sebelum titik
+            const ribuan = split[0].substr(sisa).match(/\d{3}/gi); // Memecah angka setiap 3 digit
+            
+            if (ribuan) {
+                const separator = sisa ? '.' : ''; // Menambahkan titik pemisah ribuan
+                rupiah += separator + ribuan.join('.'); // Menggabungkan hasil ribuan dengan pemisah titik
+            }
+            
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; // Menambahkan desimal jika ada
+            return 'Rp ' + rupiah; // Menambahkan simbol Rupiah di awal
+        }             
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://cdn-icons-png.flaticon.com/512/2719/2719206.png" class="logo" alt="Logo Toko Emas">
+        <h2>Pembayaran Toko Emas</h2>
+        <form>
+            <label for="gross_amount">Jumlah Pembayaran (Rp):</label>
+            <input type="number" id="gross_amount" required>
+
+            <label for="first_name">Nama Depan:</label>
+            <input type="text" id="first_name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Nomor Telepon:</label>
+            <input type="text" id="phone" required>
+
+            <button type="button" id="pay-button">Bayar Sekarang</button>
+        </form>
+
+        <!-- Display the formatted total amount -->
+        <div id="gross_amount_display"></div>
+    </div>
+
+</body>
+</html>
