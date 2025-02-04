@@ -171,6 +171,9 @@
                             onSuccess: function (result) {
                                 Swal.fire("Berhasil", "Pembayaran berhasil!", "success");
                                 console.log("✅ Pembayaran berhasil:", result);
+                                
+                                // Redirect ke halaman sukses setelah pembayaran berhasil
+                                window.location.href = "struk.html"; // Ganti dengan URL halaman sukses yang sesuai
                             },
                             onPending: function (result) {
                                 Swal.fire("Menunggu", "Pembayaran sedang diproses", "info");
@@ -191,7 +194,7 @@
                 }
             });
         });
-
+    
         // Format angka Rupiah
         function formatRupiah(angka) {
             return angka.toLocaleString("id-ID", {
