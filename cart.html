@@ -216,8 +216,9 @@
                     const quantity = item.quantity || 1;
                     const subtotal = item.total_harga || 0;
                     totalHarga += subtotal;
-                    
-    
+                
+                    const statusPembayaran = item.status_pembayaran || "Belum Dibayar"; 
+                
                     const row = document.createElement("tr");
                     row.innerHTML = `
                       <td>${index + 1}</td>
