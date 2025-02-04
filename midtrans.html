@@ -78,21 +78,21 @@
             // Ambil total harga dari localStorage dan set ke input gross_amount
             const totalHarga = localStorage.getItem("cartTotal") || "0";
             
-            // Format totalHarga menjadi format Rupiah dengan titik pemisah ribuan
+            // Format totalHarga menjadi format Rupiah
             const formattedTotal = formatRupiah(totalHarga);
             
             // Set nilai asli ke input gross_amount
             const grossAmountInput = document.getElementById("gross_amount");
-            grossAmountInput.value = totalHarga;  // Set nilai asli untuk keperluan pengiriman data
-            grossAmountInput.setAttribute("readonly", true); // Menonaktifkan input supaya tidak bisa diubah
+            grossAmountInput.value = totalHarga;
+            grossAmountInput.setAttribute("readonly", true);
             
-            // Menampilkan total harga yang diformat dalam Rupiah dengan titik pemisah ribuan
+            // Tampilkan di halaman
             document.getElementById("gross_amount_display").innerText = formattedTotal;
-        
-            // Tampilkan format yang sama pada tabel jumlah pembayaran
+            
+            // Tampilkan format di tabel jumlah pembayaran
             const paymentTableAmount = document.getElementById("payment-amount");
             if (paymentTableAmount) {
-                paymentTableAmount.innerText = formattedTotal; // Menampilkan nominal yang sudah diformat
+                paymentTableAmount.innerText = formattedTotal;
             }
             
             // Event listener untuk tombol bayar
@@ -108,11 +108,15 @@
                     return;
                 }
             
+                // **Buat order_id unik dengan timestamp**
+                const orderId = `ORDER-${Date.now()}`;
+            
                 try {
                     const response = await fetch("https://be-3.vercel.app/payment", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
+                            order_id: orderId, // Kirim order_id ke backend
                             gross_amount: grossAmount,
                             customer_details: { name: firstName, email, phone }
                         })
@@ -120,10 +124,12 @@
             
                     const data = await response.json();
             
-                    // Pastikan respons mengandung redirect_url
                     if (data.redirect_url) {
-                        // Redirect ke URL Midtrans untuk melakukan pembayaran
-                        window.location.href = data.redirect_url; // Redirect ke URL yang diberikan oleh Midtrans
+                        // **Simpan order_id di localStorage untuk digunakan di halaman lain**
+                        localStorage.setItem("currentOrderId", orderId);
+    
+                        // Redirect ke halaman pembayaran Midtrans
+                        window.location.href = data.redirect_url;
                     } else {
                         Swal.fire("Kesalahan", "URL pembayaran tidak ditemukan", "error");
                     }
@@ -133,24 +139,29 @@
                 }
             });
         });
-        
-        // Fungsi untuk memformat angka ke format Rupiah dengan titik pemisah ribuan dan koma untuk desimal
+    
+        // **Ambil order_id di halaman lain (contoh: midtrans.html)**
+        function getOrderIdFromLocalStorage() {
+            return localStorage.getItem("currentOrderId") || "undefined";
+        }
+    
+        // Fungsi format Rupiah
         function formatRupiah(angka) {
-            const numberString = angka.toString().replace(/[^,\d]/g, ''); // Menghapus karakter selain angka
+            const numberString = angka.toString().replace(/[^,\d]/g, '');
             const split = numberString.split(',');
-            const sisa = split[0].length % 3; // Menghitung sisa bagi untuk pemisahan ribuan
-            let rupiah = split[0].substr(0, sisa); // Menambahkan angka sebelum titik
-            const ribuan = split[0].substr(sisa).match(/\d{3}/gi); // Memecah angka setiap 3 digit
+            const sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
             
             if (ribuan) {
-                const separator = sisa ? '.' : ''; // Menambahkan titik pemisah ribuan
-                rupiah += separator + ribuan.join('.'); // Menggabungkan hasil ribuan dengan pemisah titik
+                const separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
             }
             
-            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; // Menambahkan desimal jika ada
-            return 'Rp ' + rupiah; // Menambahkan simbol Rupiah di awal
-        }             
-    </script>
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return 'Rp ' + rupiah;
+        }
+    </script>    
 </head>
 <body>
 
