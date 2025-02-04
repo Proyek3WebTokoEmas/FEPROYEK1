@@ -164,11 +164,10 @@
                         // Simpan order_id di localStorage untuk digunakan di halaman lain
                         localStorage.setItem("currentOrderId", orderId);
                         console.log("💾 Order ID disimpan di localStorage:", localStorage.getItem("currentOrderId"));
-                    
-                        // Redirect ke halaman struk pembayaran
-                        const strukUrl = `https://proyek3webtokoemas.github.io/FEPROYEK1/struk.html`;
-                        console.log("➡ Mengalihkan ke struk pembayaran:", strukUrl);
-                        window.location.href = strukUrl;
+        
+                        // Redirect ke halaman pembayaran Midtrans
+                        console.log("➡ Mengalihkan ke Midtrans:", data.redirect_url);
+                        window.location.href = data.redirect_url;
                     } else {
                         Swal.fire("Kesalahan", "URL pembayaran tidak ditemukan", "error");
                         console.error("❌ Kesalahan: URL pembayaran tidak ada dalam respons backend.");
