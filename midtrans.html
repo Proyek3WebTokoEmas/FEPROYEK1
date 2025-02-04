@@ -7,6 +7,7 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="YOUR_CLIENT_KEY"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert CDN -->
     <style>
+        /* Styling untuk tampilan */
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #FFD700, #FFF3C6);
@@ -160,13 +161,13 @@
                     const data = await response.json();
                     console.log("✅ Respons dari backend:", data);
             
-                    if (data.snap_token) {
+                    if (data.token) {
                         // Menyimpan order_id ke localStorage untuk digunakan di halaman lain
                         localStorage.setItem("currentOrderId", orderId);
                         console.log("💾 Order ID disimpan di localStorage:", localStorage.getItem("currentOrderId"));
             
                         // Menampilkan pop-up pembayaran Midtrans menggunakan snap.pay()
-                        snap.pay(data.snap_token, {
+                        snap.pay(data.token, {
                             onSuccess: function (result) {
                                 Swal.fire("Berhasil", "Pembayaran berhasil!", "success");
                                 console.log("✅ Pembayaran berhasil:", result);
@@ -185,18 +186,19 @@
                         console.error("❌ Kesalahan: Token Snap tidak ada dalam respons backend.");
                     }
                 } catch (error) {
-                    Swal.fire("Kesalahan", "Terjadi kesalahan saat memproses pembayaran.", "error");
-                    console.error("❌ Error saat menghubungi backend:", error);
+                    Swal.fire("Error", "Terjadi kesalahan saat menghubungi server", "error");
+                    console.error("❌ Error:", error);
                 }
             });
         });
-        
-        // Fungsi format Rupiah
-        function formatRupiah(angka) {
-            return 'Rp ' + angka.toLocaleString('id-ID');
-        }        
-        
-    </script>
 
+        // Format angka Rupiah
+        function formatRupiah(angka) {
+            return angka.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            });
+        }
+    </script>
 </body>
 </html>
