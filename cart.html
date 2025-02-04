@@ -196,7 +196,7 @@
     
         const userId = getUserIdFromToken(token);
     
-        fetch(`https://be-3.vercel.app/orders/${userId}`, {
+        fetch(`https://be-3.vercel.app/orders/{id}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
