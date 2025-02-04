@@ -173,126 +173,103 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            console.log("🚀 Halaman dimuat, memulai proses...");
-        
-            // Ambil total harga dari localStorage dan set ke input gross_amount
-            const totalHarga = localStorage.getItem("cartTotal") || "0";
-            console.log("💰 Total Harga dari localStorage:", totalHarga);
-        
-            // Format totalHarga menjadi format Rupiah
-            const formattedTotal = formatRupiah(totalHarga);
-        
-            // Set nilai asli ke input gross_amount
-            const grossAmountInput = document.getElementById("gross_amount");
-            if (grossAmountInput) {
-                grossAmountInput.value = totalHarga;
-                grossAmountInput.setAttribute("readonly", true);
-            }
-        
-            // Tampilkan di halaman
-            const grossAmountDisplay = document.getElementById("gross_amount_display");
-            if (grossAmountDisplay) {
-                grossAmountDisplay.innerText = formattedTotal;
-            }
-        
-            // Tampilkan format di tabel jumlah pembayaran
-            const paymentTableAmount = document.getElementById("payment-amount");
-            if (paymentTableAmount) {
-                paymentTableAmount.innerText = formattedTotal;
-            }
-        
-            // Event listener untuk tombol bayar
-            const payButton = document.getElementById("pay-button");
-            if (payButton) {
-                payButton.addEventListener("click", async function () {
-                    console.log("🛒 Tombol bayar diklik!");
-        
-                    const grossAmount = parseInt(grossAmountInput.value);
-                    const firstName = document.getElementById("first_name").value;
-                    const email = document.getElementById("email").value;
-                    const phone = document.getElementById("phone").value;
-        
-                    console.log("📋 Data input pengguna:");
-                    console.log(" - Nama:", firstName);
-                    console.log(" - Email:", email);
-                    console.log(" - Phone:", phone);
-                    console.log(" - Gross Amount:", grossAmount);
-        
-                    // Validasi inputan
-                    if (!firstName || !email || !phone) {
-                        Swal.fire("Error", "Semua kolom harus diisi!", "warning");
-                        console.error("❌ Validasi gagal: Ada inputan yang kosong.");
-                        return;
-                    }
-        
-                    // **Buat order_id unik dengan timestamp**
-                    const orderId = `ORDER-${Date.now()}`;
-                    console.log("🆔 Order ID yang dibuat:", orderId);
-        
-                    try {
-                        console.log("🔗 Mengirim permintaan ke backend...");
-                        const response = await fetch("https://be-3.vercel.app/payment", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                order_id: orderId, // Kirim order_id ke backend
-                                gross_amount: grossAmount,
-                                customer_details: { name: firstName, email, phone }
-                            })
-                        });
-        
-                        console.log("📡 Menunggu respons dari backend...");
-                        const data = await response.json();
-                        console.log("✅ Respons dari backend:", data);
-        
-                        if (data.redirect_url) {
-                            // **Simpan order_id di localStorage sebelum redirect**
-                            localStorage.setItem("currentOrderId", orderId);
-                            console.log("💾 Order ID disimpan di localStorage:", orderId);
-        
-                            // Redirect ke halaman pembayaran Midtrans
-                            console.log("➡️ Mengalihkan ke Midtrans:", data.redirect_url);
-                            window.location.href = data.redirect_url;
-                        } else {
-                            Swal.fire("Kesalahan", "URL pembayaran tidak ditemukan", "error");
-                            console.error("❌ Kesalahan: URL pembayaran tidak ada dalam respons backend.");
-                        }
-                    } catch (error) {
-                        Swal.fire("Kesalahan", "Terjadi kesalahan saat memproses pembayaran.", "error");
-                        console.error("❌ Error saat menghubungi backend:", error);
-                    }
-                });
-            }
-        });
-        
-        // **Ambil order_id di halaman lain (contoh: midtrans.html)**
-        function getOrderIdFromLocalStorage() {
-            const orderId = localStorage.getItem("currentOrderId");
-            if (!orderId) {
-                console.warn("⚠️ Order ID tidak ditemukan di localStorage.");
-                return "undefined";
-            }
-            console.log("📦 Order ID dari localStorage:", orderId);
-            return orderId;
+      window.onload = function () {
+        const token = localStorage.getItem("authToken");
+    
+        if (!token) {
+            Swal.fire({
+                title: "Harap Login Terlebih Dahulu",
+                text: "Anda harus login untuk mengakses halaman ini.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Login",
+                cancelButtonText: "Batal",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "loginregis.html";
+                } else {
+                    window.location.href = "index.html";
+                }
+            });
+            return;
         }
-        
-        // Fungsi format Rupiah
-        function formatRupiah(angka) {
-            const numberString = angka.toString().replace(/[^,\d]/g, '');
-            const split = numberString.split(',');
-            const sisa = split[0].length % 3;
-            let rupiah = split[0].substr(0, sisa);
-            const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-        
-            if (ribuan) {
-                const separator = sisa ? '.' : '';
-                rupiah += separator + ribuan.join('.');
+    
+        const userId = getUserIdFromToken(token);
+    
+        fetch(`https://be-3.vercel.app/orders/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.querySelector("#cart-table-body");
+            tableBody.innerHTML = "";
+    
+            if (data.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
+            } else {
+                let totalHarga = 0;
+    
+                data.forEach((item, index) => {
+                    const quantity = item.quantity || 1;
+                    const subtotal = item.total_harga || 0;
+                    totalHarga += subtotal;
+                    const statusPembayaran = item.status_pembayaran ? "Sudah Terbayar" : "Belum Terbayar";
+    
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                      <td>${index + 1}</td>
+                      <td>
+                        <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
+                        <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
+                        <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
+                        <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
+                        <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
+                      </td>
+                      <td>${quantity}</td>
+                      <td>Rp ${subtotal.toLocaleString()}</td>
+                      <td>${statusPembayaran}</td>
+                      <td>
+                        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
+                      </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+    
+                // Tombol Checkout
+                document.querySelectorAll(".btn-checkout").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const orderId = this.getAttribute("data-orderid");
+                        const totalHarga = this.getAttribute("data-total"); // Ambil total harga dari tombol
+    
+                        // Simpan total harga dan order ID ke localStorage
+                        localStorage.setItem("cartTotal", totalHarga);
+                        localStorage.setItem("orderId", orderId);
+    
+                        // Arahkan ke halaman pembayaran
+                        window.location.href = `midtrans.html?order_id=${orderId}`;
+                    });
+                });
+    
             }
-        
-            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-            return 'Rp ' + rupiah;
-        }        
+        })
+        .catch(error => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Kesalahan',
+                text: 'Tidak dapat terhubung ke server.',
+            });
+            console.error('Error:', error);
+        });
+    };
+    
+    function getUserIdFromToken(token) {
+        if (!token) return null;
+        const payload = JSON.parse(atob(token.split('.')[1])); 
+        return payload.user_id; 
+    }    
     </script>    
 </body>
 </html>
