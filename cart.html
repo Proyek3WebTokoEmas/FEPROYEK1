@@ -217,7 +217,6 @@
                     const subtotal = item.total_harga || 0;
                     totalHarga += subtotal;
                 
-                    
                 
                     const row = document.createElement("tr");
                     row.innerHTML = `
@@ -231,7 +230,7 @@
                       </td>
                       <td>${quantity}</td>
                       <td>Rp ${subtotal.toLocaleString()}</td>
-                      <td>${statusPembayaran}</td>
+                     
                       <td>
                         <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
                       </td>
