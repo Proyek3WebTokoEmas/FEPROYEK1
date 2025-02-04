@@ -219,23 +219,23 @@
                 
                 
                     const row = document.createElement("tr");
-                    row.innerHTML = `
-                      <td>${index + 1}</td>
-                      <td>
-                        <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
-                        <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
-                        <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
-                        <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
-                        <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
-                      </td>
-                      <td>${quantity}</td>
-                      <td>Rp ${subtotal.toLocaleString()}</td>
-                     
-                      <td>
-                        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
-                      </td>
-                    `;
-                    tableBody.appendChild(row);
+row.innerHTML = `
+    <td>${index + 1}</td>
+    <td>
+        <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
+        <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
+        <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
+        <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
+        <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
+    </td>
+    <td>${quantity}</td>
+    <td>Rp ${subtotal.toLocaleString()}</td>
+    <td>
+        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
+    </td>
+`;
+tableBody.appendChild(row);
+
                 });
     
                 // Tombol Checkout
