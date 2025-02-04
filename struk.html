@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <title>Sertifikat Pembelian Emas - Toko Mas Duta Sumedang</title>
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #FFD700, #FFF3C6);
+            text-align: center;
+            padding: 50px;
+        }
         .certificate-container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: auto;
             padding: 30px;
-            border: 2px solid #ffd700;
-            border-radius: 12px;
             background-color: #fffef7;
+            border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #FFD700;
         }
         .certificate-header {
             text-align: center;
-            color: #d4af37;
+            color: #B8860B;
             font-weight: bold;
             font-size: 24px;
             margin-bottom: 20px;
         }
         .certificate-body {
+            text-align: left;
             font-size: 16px;
             line-height: 1.8;
         }
@@ -36,6 +42,10 @@
             background-color: #007bff;
             color: #fff;
             margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         .btn-print:hover {
             background-color: #0056b3;
@@ -43,46 +53,71 @@
     </style>
 </head>
 <body>
-    <main>
-        <section class="certificate-section py-5">
-            <div class="certificate-container">
-                <h2 class="certificate-header">Sertifikat Pembelian Emas</h2>
-                <div class="certificate-body">
-                    <p>Dengan ini kami menyatakan bahwa:</p>
-                    <p><strong>Nama Pembeli:</strong> John Doe</p>
-                    <p><strong>Nomor Transaksi:</strong> #98765432</p>
-                    <p><strong>Tanggal Pembelian:</strong> 30 Desember 2024</p>
-                    <hr>
-                    <p><strong>Rincian Produk:</strong></p>
-                    <ul>
-                        <li>Nama Produk: Cincin Emas 24K</li>
-                        <li>Berat: 10 gram</li>
-                        <li>Kadar Karat: 24K</li>
-                        <li>Harga: Rp 10,000,000</li>
-                    </ul>
-                    <hr>
-                    <p>Kami menjamin bahwa produk yang Anda beli adalah emas asli dengan kadar karat sesuai spesifikasi di atas.</p>
-                </div>
-                <div class="certificate-footer">
-                    <p>Toko Mas Duta Sumedang</p>
-                    <p><em>"Kepercayaan Anda adalah Prioritas Kami"</em></p>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-print" onclick="window.print()">Cetak Sertifikat</button>
-                </div>
-            </div>
-        </section>
-    </main>
 
-    <footer>
-        <div class="container text-center">
-            <p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
+    <div class="certificate-container">
+        <h2 class="certificate-header">Sertifikat Pembelian Emas</h2>
+        <div class="certificate-body">
+            <p>Dengan ini kami menyatakan bahwa:</p>
+            <p><strong>Nama Pembeli:</strong> <span id="buyer-name"></span></p>
+            <p><strong>Email:</strong> <span id="buyer-email"></span></p>
+            <p><strong>Nomor Telepon:</strong> <span id="buyer-phone"></span></p>
+            <p><strong>Nomor Transaksi:</strong> <span id="order-id"></span></p>
+            <p><strong>Tanggal Pembelian:</strong> <span id="purchase-date"></span></p>
+            <hr>
+            <p><strong>Rincian Produk:</strong></p>
+            <ul>
+                <li>Nama Produk: <span id="product-name">Produk Emas</span></li>
+                <li>Berat: <span id="product-weight">-</span> gram</li>
+                <li>Kadar Karat: <span id="product-karat">-</span>K</li>
+                <li>Harga: <span id="total-price"></span></li>
+            </ul>
+            <hr>
+            <p>Kami menjamin bahwa produk yang Anda beli adalah emas asli dengan kadar karat sesuai spesifikasi di atas.</p>
         </div>
-    </footer>
+        <div class="certificate-footer">
+            <p><strong>Toko Mas Duta Sumedang</strong></p>
+            <p><em>"Kepercayaan Anda adalah Prioritas Kami"</em></p>
+        </div>
+        <div class="text-center">
+            <button class="btn-print" onclick="window.print()">Cetak Sertifikat</button>
+        </div>
+    </div>
 
     <script>
-        // Optional: Script untuk cetak sertifikat
-        console.log("Sertifikat pembelian emas siap dicetak.");
+        // Ambil data dari localStorage
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("📜 Mengisi struk dengan data pembayaran...");
+
+            const buyerName = localStorage.getItem("buyerName") || "Nama Tidak Diketahui";
+            const buyerEmail = localStorage.getItem("buyerEmail") || "Email Tidak Diketahui";
+            const buyerPhone = localStorage.getItem("buyerPhone") || "Nomor Tidak Diketahui";
+            const orderId = localStorage.getItem("currentOrderId") || "ORDER-XXXX";
+            const totalHarga = localStorage.getItem("cartTotal") || 0;
+            const purchaseDate = new Date().toLocaleDateString("id-ID");
+
+            // Produk default, bisa diubah sesuai kebutuhan
+            const productName = "Cincin Emas 24K";
+            const productWeight = "10";  // Misalnya berat dalam gram
+            const productKarat = "24";
+
+            // Format harga
+            const formattedTotal = parseInt(totalHarga).toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR"
+            });
+
+            // Set data ke halaman
+            document.getElementById("buyer-name").innerText = buyerName;
+            document.getElementById("buyer-email").innerText = buyerEmail;
+            document.getElementById("buyer-phone").innerText = buyerPhone;
+            document.getElementById("order-id").innerText = orderId;
+            document.getElementById("purchase-date").innerText = purchaseDate;
+            document.getElementById("total-price").innerText = formattedTotal;
+            document.getElementById("product-name").innerText = productName;
+            document.getElementById("product-weight").innerText = productWeight;
+            document.getElementById("product-karat").innerText = productKarat;
+        });
     </script>
+
 </body>
 </html>
