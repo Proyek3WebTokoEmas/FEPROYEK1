@@ -111,23 +111,25 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             console.log("📜 Mengisi struk dengan data pembayaran...");
-
-            const buyerName = localStorage.getItem("buyerName") || "Nama Tidak Diketahui";
-            const buyerEmail = localStorage.getItem("buyerEmail") || "Email Tidak Diketahui";
-            const buyerPhone = localStorage.getItem("buyerPhone") || "Nomor Tidak Diketahui";
+        
+            // Ambil data dari localStorage
+            const buyerName = localStorage.getItem("firstName") || "Nama Tidak Diketahui";
+            const buyerEmail = localStorage.getItem("email") || "Email Tidak Diketahui";
+            const buyerPhone = localStorage.getItem("phone") || "Nomor Tidak Diketahui";
             const orderId = localStorage.getItem("currentOrderId") || "ORDER-XXXX";
             const totalHarga = localStorage.getItem("cartTotal") || 0;
             const purchaseDate = new Date().toLocaleDateString("id-ID");
-
+        
             const productName = "Cincin Emas 24K";
             const productWeight = "10";  
             const productKarat = "24";
-
+        
             const formattedTotal = parseInt(totalHarga).toLocaleString("id-ID", {
                 style: "currency",
                 currency: "IDR"
             });
-
+        
+            // Masukkan data ke dalam elemen HTML
             document.getElementById("buyer-name").innerText = buyerName;
             document.getElementById("buyer-email").innerText = buyerEmail;
             document.getElementById("buyer-phone").innerText = buyerPhone;
@@ -137,7 +139,7 @@
             document.getElementById("product-name").innerText = productName;
             document.getElementById("product-weight").innerText = productWeight;
             document.getElementById("product-karat").innerText = productKarat;
-        });
+        });        
 
         function downloadPDF() {
             const { jsPDF } = window.jspdf;
