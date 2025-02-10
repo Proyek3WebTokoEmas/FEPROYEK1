@@ -102,7 +102,9 @@
             ];
     
             const productList = document.getElementById('product-list');
-            products.forEach(product => {
+            productList.innerHTML = ""; // Kosongkan dulu sebelum render
+    
+            products.forEach((product, index) => {
                 const price = (goldPricePerGramInIDR * product.weight).toFixed(2);
                 const formattedPrice = new Intl.NumberFormat('id-ID', {
                     style: 'currency',
@@ -113,22 +115,54 @@
                 const productCard = `
                     <div class="col-md-4 mb-4">
                         <div class="card product-card">
-                            <img src="images/cincin${products.indexOf(product) + 1}.jpg" alt="${product.name}" class="card-img-top product-image">
+                            <img src="images/cincin${index + 1}.jpg" alt="${product.name}" class="card-img-top product-image">
                             <div class="card-body text-center">
                                 <h3 class="product-title">${product.name}</h3>
                                 <p class="product-price">${formattedPrice}</p>
-                                <button class="btn btn-buy">Beli Sekarang</button>
+                                <button class="btn btn-buy" data-name="${product.name}" data-price="${price}" data-image="images/cincin${index + 1}.jpg">Beli Sekarang</button>
                             </div>
                         </div>
                     </div>
                 `;
                 productList.innerHTML += productCard;
             });
+    
+            // Tambahkan event listener ke tombol "Beli Sekarang"
+            addBuyEvent();
+        }
+    
+        function addBuyEvent() {
+            const buyButtons = document.querySelectorAll(".btn-buy");
+            buyButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const product = {
+                        name: this.getAttribute("data-name"),
+                        price: this.getAttribute("data-price"),
+                        image: this.getAttribute("data-image"),
+                        quantity: 1 // Default jumlah 1
+                    };
+    
+                    // Simpan produk ke localStorage
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    cart.push(product);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+    
+                    // Tampilkan SweetAlert
+                    Swal.fire({
+                        title: "Pesanan Berhasil Ditambahkan!",
+                        text: "Pesanan Anda telah ditambahkan ke keranjang.",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        // Redirect ke halaman cart
+                        window.location.href = "cart.html";
+                    });
+                });
+            });
         }
     
         fetchMetalPrice();
     </script>
-    
     
 </body>
 </html>

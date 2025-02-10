@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Gelang - Toko Mas Duta Sumedang</title>
     <style>
         .product-card {
@@ -117,12 +118,36 @@
                             <div class="card-body text-center">
                                 <h3 class="product-title">${product.name}</h3>
                                 <p class="product-price">${formattedPrice}</p>
-                                <button class="btn btn-buy">Beli Sekarang</button>
+                                <button class="btn btn-buy" onclick="addToCart('${product.name}', ${price}, 'images/gelang${index + 1}.png')">Beli Sekarang</button>
                             </div>
                         </div>
                     </div>
                 `;
                 productList.innerHTML += productCard;
+            });
+        }
+
+        function addToCart(productName, productPrice, productImage) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            cart.push({
+                name: productName,
+                price: productPrice,
+                image: productImage,
+                quantity: 1
+            });
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            Swal.fire({
+                title: "Berhasil Ditambahkan!",
+                text: `${productName} telah masuk ke dalam keranjang Anda.`,
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "cart.html";
+                }
             });
         }
 
