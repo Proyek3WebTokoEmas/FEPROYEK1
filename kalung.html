@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="style/main.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Tambahkan SweetAlert -->
     <title>Kalung - Toko Mas Duta Sumedang</title>
     <style>
         .product-card {
@@ -118,35 +117,12 @@
                             <div class="card-body text-center">
                                 <h3 class="product-title">${product.name}</h3>
                                 <p class="product-price">${formattedPrice}</p>
-                                <button class="btn btn-buy" onclick="addToCart('${product.name}', ${price}, 'images/kalung${index + 1}.jpg')">Beli Sekarang</button>
+                                <button class="btn btn-buy">Beli Sekarang</button>
                             </div>
                         </div>
                     </div>
                 `;
                 productList.innerHTML += productCard;
-            });
-        }
-
-        function addToCart(name, price, image) {
-            // Ambil daftar cart dari localStorage
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-            // Tambahkan produk ke cart
-            cart.push({ name, price, image });
-
-            // Simpan kembali ke localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Tampilkan SweetAlert
-            Swal.fire({
-                title: "Berhasil Ditambahkan!",
-                text: "Produk telah masuk ke keranjang belanja.",
-                icon: "success",
-                confirmButtonText: "OK"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "cart.html"; // Redirect ke halaman cart
-                }
             });
         }
 
