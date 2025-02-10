@@ -176,103 +176,53 @@
     </footer>
 
     <script>
-      window.onload = function () {
-        const token = localStorage.getItem("authToken");
-
-        if (!token) {
-          Swal.fire({
-            title: "Harap Login Terlebih Dahulu",
-            text: "Anda harus login untuk mengakses halaman ini.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Login",
-            cancelButtonText: "Batal",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "loginregis.html";
-            } else {
-              window.location.href = "index.html";
-            }
-          });
-          return;
-        }
-
-        const userId = getUserIdFromToken(token);
-
-        fetch(`https://be-3.vercel.app/orders/${userId}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
+        window.onload = function () {
             const tableBody = document.querySelector("#cart-table-body");
             tableBody.innerHTML = "";
-
-            if (data.length === 0) {
-              tableBody.innerHTML =
-                "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
+    
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    
+            if (cart.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Keranjang kosong.</td></tr>";
             } else {
-              let totalHarga = 0;
-
-              data.forEach((item, index) => {
-                const quantity = item.quantity || 1;
-                const subtotal = item.total_harga || 0;
-                totalHarga += subtotal;
-
-                const row = document.createElement("tr");
-                row.innerHTML = `
-    <td>${index + 1}</td>
-    <td>
-        <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
-        <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
-        <p><strong>Berat Emas:</strong> ${item.berat_emas}</p>
-        <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
-        <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
-    </td>
-    <td>${quantity}</td>
-    <td>Rp ${subtotal.toLocaleString()}</td>
-    <td>
-        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${
-          item.order_id
-        }" data-total="${subtotal}">Checkout</button>
-    </td>
-`;
-                tableBody.appendChild(row);
-              });
-
-              // Tombol Checkout
-              document.querySelectorAll(".btn-checkout").forEach((button) => {
-                button.addEventListener("click", function () {
-                  const orderId = this.getAttribute("data-orderid");
-                  const totalHarga = this.getAttribute("data-total"); // Ambil total harga dari tombol
-
-                  // Simpan total harga dan order ID ke localStorage
-                  localStorage.setItem("cartTotal", totalHarga);
-                  localStorage.setItem("orderId", orderId);
-
-                  // Arahkan ke halaman pembayaran
-                  window.location.href = `midtrans.html?order_id=${orderId}`;
+                let totalHarga = 0;
+    
+                cart.forEach((item, index) => {
+                    const quantity = item.quantity || 1;
+                    const subtotal = item.price * quantity;
+                    totalHarga += subtotal;
+    
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>
+                            <p><strong>Jenis Perhiasan:</strong> ${item.name}</p>
+                            <p><strong>Berat Emas:</strong> ${item.weight} gram</p>
+                        </td>
+                        <td>${quantity}</td>
+                        <td>Rp ${subtotal.toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm btn-checkout" data-index="${index}">Checkout</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
                 });
-              });
+    
+                // Tambahkan event listener ke tombol checkout
+                document.querySelectorAll(".btn-checkout").forEach((button) => {
+                    button.addEventListener("click", function () {
+                        const index = this.getAttribute("data-index");
+                        const item = cart[index];
+    
+                        localStorage.setItem("cartTotal", item.price);
+                        localStorage.setItem("orderId", index);
+    
+                        window.location.href = `midtrans.html?order_id=${index}`;
+                    });
+                });
             }
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: "error",
-              title: "Kesalahan",
-              text: "Tidak dapat terhubung ke server.",
-            });
-            console.error("Error:", error);
-          });
-      };
-
-      function getUserIdFromToken(token) {
-        if (!token) return null;
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.user_id;
-      }
+        };
     </script>
+    
   </body>
 </html>
