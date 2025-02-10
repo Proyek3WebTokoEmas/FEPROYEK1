@@ -57,6 +57,7 @@
 							<h3 class="text-main">Kalung</h3>
 							<p class="text-second">Elegant necklaces to complete your look.</p>
 							<a href="kalung.html" class="btn btn-main">View Kalung</a>
+							<button class="btn btn-main mt-2" onclick="addToCart()">Beli Sekarang</button>
 						</div>
 					</div>
 					<div class="category col-12 col-sm-6 col-md-3 mb-4" data-aos="fade-up" data-aos-delay="100">
@@ -65,6 +66,7 @@
 							<h3 class="text-main">Cincin</h3>
 							<p class="text-second">Stunning rings for every occasion.</p>
 							<a href="cincin.html" class="btn btn-main">View Cincin</a>
+							<button class="btn btn-main mt-2" onclick="addToCart()">Beli Sekarang</button>
 						</div>
 					</div>
 					<div class="category col-12 col-sm-6 col-md-3 mb-4" data-aos="fade-up" data-aos-delay="200">
@@ -73,6 +75,7 @@
 							<h3 class="text-main">Anting</h3>
 							<p class="text-second">Charming earrings for a timeless appeal.</p>
 							<a href="anting.html" class="btn btn-main">View Anting</a>
+							<button class="btn btn-main mt-2" onclick="addToCart()">Beli Sekarang</button>
 						</div>
 					</div>
 					<div class="category col-12 col-sm-6 col-md-3 mb-4" data-aos="fade-up" data-aos-delay="300">
@@ -81,6 +84,7 @@
 							<h3 class="text-main">Gelang</h3>
 							<p class="text-second">Beautiful bracelets to adorn your wrist.</p>
 							<a href="gelang.html" class="btn btn-main">View Gelang</a>
+							<button class="btn btn-main mt-2" onclick="addToCart()">Beli Sekarang</button>
 						</div>
 					</div>
 				</div>
@@ -95,8 +99,23 @@
 	</footer>
 
 	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 	<script>
 		AOS.init();
+
+		function addToCart() {
+			Swal.fire({
+				title: "Berhasil!",
+				text: "Barang telah ditambahkan ke keranjang.",
+				icon: "success",
+				confirmButtonText: "OK"
+			}).then((result) => {
+				if (result.isConfirmed) {
+					window.location.href = "cart.html"; // Redirect ke cart.html setelah klik OK
+				}
+			});
+		}
 	</script>
 </body>
 </html>
