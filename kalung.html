@@ -81,27 +81,29 @@
                 const data = await response.json();
                 const xauRate = data.rates['XAU']; // Nilai XAU dari API
                 const idrRate = data.rates['IDR']; // Kurs USD ke IDR dari API
-
+    
                 // Harga emas per troy ounce dalam IDR
                 const goldPricePerOunceInIDR = (1 / xauRate) * idrRate;
-
+    
                 // Harga emas per gram dalam IDR
                 const goldPricePerGramInIDR = goldPricePerOunceInIDR / 31.1035;
-
+    
                 displayProducts(goldPricePerGramInIDR);
             } catch (error) {
                 console.error('Error fetching metal price:', error);
             }
         }
-
+    
         function displayProducts(goldPricePerGramInIDR) {
             const products = [
                 { name: 'Kalung Emas 24K (10 gram)', weight: 10 },
                 { name: 'Kalung Emas 22K (8 gram)', weight: 8 },
                 { name: 'Kalung Berlian (5 gram)', weight: 5 }
             ];
-
+    
             const productList = document.getElementById('product-list');
+            productList.innerHTML = "";
+    
             products.forEach((product, index) => {
                 const price = (goldPricePerGramInIDR * product.weight).toFixed(2);
                 const formattedPrice = new Intl.NumberFormat('id-ID', {
@@ -109,7 +111,7 @@
                     currency: 'IDR',
                     minimumFractionDigits: 2
                 }).format(price);
-
+    
                 const productCard = `
                     <div class="col-md-4 mb-4">
                         <div class="card product-card">
@@ -117,7 +119,7 @@
                             <div class="card-body text-center">
                                 <h3 class="product-title">${product.name}</h3>
                                 <p class="product-price">${formattedPrice}</p>
-                                <button class="btn btn-buy">Beli Sekarang</button>
+                                <button class="btn btn-buy" onclick="addToCart('${product.name}', ${product.weight}, ${price})">Beli Sekarang</button>
                             </div>
                         </div>
                     </div>
@@ -125,8 +127,15 @@
                 productList.innerHTML += productCard;
             });
         }
-
+    
+        function addToCart(name, weight, price) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({ name, weight, price, quantity: 1 });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            window.location.href = "cart.html"; // Redirect ke halaman cart
+        }
+    
         fetchMetalPrice();
-    </script>
+    </script>    
 </body>
 </html>

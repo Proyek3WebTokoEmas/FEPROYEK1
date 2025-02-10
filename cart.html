@@ -1,75 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style/main.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="style/main.css" />
     <title>Toko Mas Duta Sumedang Online Store | Cart</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       body {
-        font-family: 'Poppins', sans-serif;
+        font-family: "Poppins", sans-serif;
         background-color: #f8f9fa;
         margin: 0;
         padding: 0;
-    }
-    
-    .main-nav {
+      }
+
+      .main-nav {
         background: linear-gradient(135deg, #ffb400, #ff8400);
         padding: 15px;
         text-align: center;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .main-nav h1 {
+      }
+
+      .main-nav h1 {
         color: #fff;
         font-size: 2rem;
         font-weight: 700;
         margin: 0;
         text-transform: uppercase;
-    }
-    
-    .cart-section {
+      }
+
+      .cart-section {
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         padding: 30px;
         margin-top: 40px;
-    }
-    
-    .cart-section h2 {
+      }
+
+      .cart-section h2 {
         font-size: 2rem;
         font-weight: 700;
         color: #ff8400;
         margin-bottom: 25px;
         text-align: center;
-    }
-    
-    .table {
+      }
+
+      .table {
         border-collapse: collapse;
         width: 100%;
-    }
-    
-    .table th {
+      }
+
+      .table th {
         background-color: #ff8400;
         color: white;
         font-weight: 700;
         text-align: center;
         padding: 15px;
-    }
-    
-    .table td {
+      }
+
+      .table td {
         text-align: center;
         padding: 15px;
         border-bottom: 1px solid #ddd;
-    }
-    
-    .table tbody tr:hover {
+      }
+
+      .table tbody tr:hover {
         background-color: #f1f1f1;
-    }
-    
-    .btn-checkout {
+      }
+
+      .btn-checkout {
         background: linear-gradient(135deg, #28a745, #218838);
         color: #fff;
         font-size: 1.2rem;
@@ -79,15 +79,15 @@
         transition: all 0.3s ease;
         text-align: center;
         display: inline-block;
-    }
-    
-    .btn-checkout:hover {
+      }
+
+      .btn-checkout:hover {
         background: linear-gradient(135deg, #218838, #1e7e34);
         transform: scale(1.05);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .total-section {
+      }
+
+      .total-section {
         margin-top: 30px;
         display: flex;
         justify-content: space-between;
@@ -96,15 +96,15 @@
         padding: 15px 25px;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .total-section h4 {
+      }
+
+      .total-section h4 {
         font-size: 1.5rem;
         font-weight: 700;
         color: #333;
-    }
-    
-    footer {
+      }
+
+      footer {
         background: #333;
         color: #fff;
         text-align: center;
@@ -112,114 +112,117 @@
         margin-top: 50px;
         font-size: 1rem;
         font-weight: 500;
-    }
+      }
 
-        @media (max-width: 768px) {
-            .cart-section {
-                padding: 20px;
-            }
-
-            .main-nav h1 {
-                font-size: 1.5rem;
-            }
+      @media (max-width: 768px) {
+        .cart-section {
+          padding: 20px;
         }
+
+        .main-nav h1 {
+          font-size: 1.5rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav class="main-nav">
-            <div class="brand text-main">
-                <a href="https://proyek3webtokoemas.github.io/FEPROYEK1/index.html">
-                    <h1>TOKO MAS DUTA SUMEDANG</h1>
-                </a>
-            </div>
-        </nav>
+      <nav class="main-nav">
+        <div class="brand text-main">
+          <a href="https://proyek3webtokoemas.github.io/FEPROYEK1/index.html">
+            <h1>TOKO MAS DUTA SUMEDANG</h1>
+          </a>
+        </div>
+      </nav>
     </header>
 
     <main>
-        <section class="cart-section">
-            <div class="container">
-                <h2 class="text-center">Keranjang Belanja</h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Produk</th>
-                                <th>Jumlah</th>
-                                <th>Total Harga</th>
-                                <!-- <th>Status Pembayaran</th> -->
-                                <th>Checkout</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cart-table-body">
-                            <!-- Cart items will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
+      <section class="cart-section">
+        <div class="container">
+          <h2 class="text-center">Keranjang Belanja</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Produk</th>
+                  <th>Jumlah</th>
+                  <th>Total Harga</th>
+                  <!-- <th>Status Pembayaran</th> -->
+                  <th>Checkout</th>
+                </tr>
+              </thead>
+              <tbody id="cart-table-body">
+                <!-- Cart items will be populated here -->
+              </tbody>
+            </table>
+          </div>
 
-                <!-- <div class="total-section">
+          <!-- <div class="total-section">
                     <h4>Total: Rp 0</h4>
                     <a href="checkout.html" class="btn btn-checkout">Checkout</a>
                 </div> -->
-            </div>
-        </section>
+        </div>
+      </section>
     </main>
 
     <footer>
-        <div class="container">
-            <p>Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights Reserved</p>
-        </div>
+      <div class="container">
+        <p>
+          Toko Mas Duta Sumedang Online Store Copyright &copy; 2020 All Rights
+          Reserved
+        </p>
+      </div>
     </footer>
 
     <script>
       window.onload = function () {
         const token = localStorage.getItem("authToken");
-    
+
         if (!token) {
-            Swal.fire({
-                title: "Harap Login Terlebih Dahulu",
-                text: "Anda harus login untuk mengakses halaman ini.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Login",
-                cancelButtonText: "Batal",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "loginregis.html";
-                } else {
-                    window.location.href = "index.html";
-                }
-            });
-            return;
+          Swal.fire({
+            title: "Harap Login Terlebih Dahulu",
+            text: "Anda harus login untuk mengakses halaman ini.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Login",
+            cancelButtonText: "Batal",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.href = "loginregis.html";
+            } else {
+              window.location.href = "index.html";
+            }
+          });
+          return;
         }
-    
+
         const userId = getUserIdFromToken(token);
-    
+
         fetch(`https://be-3.vercel.app/orders/${userId}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
-        .then(response => response.json())
-        .then(data => {
+          .then((response) => response.json())
+          .then((data) => {
             const tableBody = document.querySelector("#cart-table-body");
             tableBody.innerHTML = "";
-    
+
             if (data.length === 0) {
-                tableBody.innerHTML = "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
+              tableBody.innerHTML =
+                "<tr><td colspan='6' class='text-center'>Tidak ada data pesanan.</td></tr>";
             } else {
-                let totalHarga = 0;
-    
-                data.forEach((item, index) => {
-                    const quantity = item.quantity || 1;
-                    const subtotal = item.total_harga || 0;
-                    totalHarga += subtotal;
-                
-                
-                    const row = document.createElement("tr");
-row.innerHTML = `
+              let totalHarga = 0;
+
+              data.forEach((item, index) => {
+                const quantity = item.quantity || 1;
+                const subtotal = item.total_harga || 0;
+                totalHarga += subtotal;
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
     <td>${index + 1}</td>
     <td>
         <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
@@ -231,45 +234,45 @@ row.innerHTML = `
     <td>${quantity}</td>
     <td>Rp ${subtotal.toLocaleString()}</td>
     <td>
-        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
+        <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${
+          item.order_id
+        }" data-total="${subtotal}">Checkout</button>
     </td>
 `;
-tableBody.appendChild(row);
+                tableBody.appendChild(row);
+              });
 
+              // Tombol Checkout
+              document.querySelectorAll(".btn-checkout").forEach((button) => {
+                button.addEventListener("click", function () {
+                  const orderId = this.getAttribute("data-orderid");
+                  const totalHarga = this.getAttribute("data-total"); // Ambil total harga dari tombol
+
+                  // Simpan total harga dan order ID ke localStorage
+                  localStorage.setItem("cartTotal", totalHarga);
+                  localStorage.setItem("orderId", orderId);
+
+                  // Arahkan ke halaman pembayaran
+                  window.location.href = `midtrans.html?order_id=${orderId}`;
                 });
-    
-                // Tombol Checkout
-                document.querySelectorAll(".btn-checkout").forEach(button => {
-                    button.addEventListener("click", function () {
-                        const orderId = this.getAttribute("data-orderid");
-                        const totalHarga = this.getAttribute("data-total"); // Ambil total harga dari tombol
-    
-                        // Simpan total harga dan order ID ke localStorage
-                        localStorage.setItem("cartTotal", totalHarga);
-                        localStorage.setItem("orderId", orderId);
-    
-                        // Arahkan ke halaman pembayaran
-                        window.location.href = `midtrans.html?order_id=${orderId}`;
-                    });
-                });
-    
+              });
             }
-        })
-        .catch(error => {
+          })
+          .catch((error) => {
             Swal.fire({
-                icon: 'error',
-                title: 'Kesalahan',
-                text: 'Tidak dapat terhubung ke server.',
+              icon: "error",
+              title: "Kesalahan",
+              text: "Tidak dapat terhubung ke server.",
             });
-            console.error('Error:', error);
-        });
-    };
-    
-    function getUserIdFromToken(token) {
+            console.error("Error:", error);
+          });
+      };
+
+      function getUserIdFromToken(token) {
         if (!token) return null;
-        const payload = JSON.parse(atob(token.split('.')[1])); 
-        return payload.user_id; 
-    }    
-    </script>    
-</body>
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.user_id;
+      }
+    </script>
+  </body>
 </html>
