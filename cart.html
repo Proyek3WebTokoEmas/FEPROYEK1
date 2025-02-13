@@ -208,13 +208,21 @@
         function checkoutItem(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let item = cart[index];
+
+            // Simpan item yang akan di-checkout ke localStorage
             localStorage.setItem("checkoutItem", JSON.stringify(item));
+            localStorage.setItem("checkoutTotal", item.harga * item.quantity);
+
             window.location.href = `midtrans.html?item=${encodeURIComponent(item.jenis)}&total=${item.harga * item.quantity}`;
         }
 
         function checkoutAll() {
             let totalHarga = document.getElementById("total-price").textContent;
-            window.location.href = `midtrans.html?total=${totalHarga}`;
+
+            // Simpan total harga ke localStorage sebelum checkout
+            localStorage.setItem("checkoutTotal", totalHarga.replace(/\./g, ''));
+
+            window.location.href = `midtrans.html?total=${totalHarga.replace(/\./g, '')}`;
         }
     </script>
 </body>
