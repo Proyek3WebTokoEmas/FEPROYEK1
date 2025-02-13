@@ -75,20 +75,21 @@
                         <div class="card product-card">
                             <img src="assets/images/kalung1.jpg" alt="Kalung Emas 22K (8 gram)" class="card-img-top product-image">
                             <div class="card-body text-center">
-                                <h3 class="product-title">Kalung Emas 22K (8 gram)</h3>
+                                <h3 class="product-title">Gelang 22K (8 gram)</h3>
                                 <p class="product-price" id="price-2">Rp7.890.440</p>
                                 <p id="stock-2">Stok: <span></span></p>
                                 <button class="btn btn-buy" onclick="addToCart('Kalung Emas 22K (8 gram)', 8)">Beli Sekarang</button>
                             </div>
                         </div>
                     </div>
+                
 
                     <!-- Produk 3 -->
                     <div class="col-md-4 mb-4">
                         <div class="card product-card">
                             <img src="assets/images/kalung3.jpg" alt="Kalung Berlian (5 gram)" class="card-img-top product-image">
                             <div class="card-body text-center">
-                                <h3 class="product-title">Kalung Berlian (5 gram)</h3>
+                                <h3 class="product-title">Cincin (5 gram)</h3>
                                 <p class="product-price" id="price-3">Rp5.000.000</p>
                                 <p id="stock-3">Stok: <span></span></p>
                                 <button class="btn btn-buy" onclick="addToCart('Kalung Berlian (5 gram)', 5)">Beli Sekarang</button>
@@ -101,21 +102,59 @@
     </main>
 
     <script>
-        if (!localStorage.getItem("stock")) {
-            let stockData = {
-                "Kalung Emas 24K (10 gram)": 5,
-                "Kalung Emas 22K (8 gram)": 8,
-                "Kalung Berlian (5 gram)": 10
-            };
-            localStorage.setItem("stock", JSON.stringify(stockData));
+
+async function fetchStock() {
+        try {
+            const response = await fetch('stok.json'); // Simulasi API
+            const stockData = await response.json();
+            localStorage.setItem("stockData", JSON.stringify(stockData)); // Simpan ke localStorage
+            updateStockDisplay();
+        } catch (error) {
+            console.error("Gagal mengambil stok:", error);
         }
+    }
+
+    function updateStockDisplay() {
+        let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+        document.getElementById("stock-1").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Emas 24K")?.stok || 0;
+        document.getElementById("stock-2").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Emas 22K")?.stok || 0;
+        document.getElementById("stock-3").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Berlian")?.stok || 0;
+    }
+
+    async function updateStock(name) {
+        let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+        let item = stockData.find(item => item.jenis === name);
+        if (item && item.stok > 0) {
+            item.stok -= 1;
+            localStorage.setItem("stockData", JSON.stringify(stockData));
+
+            await fetch('stok.json', {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(stockData)
+            });
+
+            updateStockDisplay();
+        } else {
+            Swal.fire({ title: "Stok Habis!", text: `${name} tidak tersedia.`, icon: "error" });
+        }
+    }
+
+        // if (!localStorage.getItem("stock")) {
+        //     let stockData = {
+        //         "Kalung Emas 24K (10 gram)": 5,
+        //         "Kalung Emas 22K (8 gram)": 8,
+        //         "Kalung Berlian (5 gram)": 10
+        //     };
+        //     localStorage.setItem("stock", JSON.stringify(stockData));
+        // }
     
-        function updateStockDisplay() {
-            let stockData = JSON.parse(localStorage.getItem("stock")) || {};
-            document.getElementById("stock-1").querySelector("span").textContent = stockData["Kalung Emas 24K (10 gram)"] || 0;
-            document.getElementById("stock-2").querySelector("span").textContent = stockData["Kalung Emas 22K (8 gram)"] || 0;
-            document.getElementById("stock-3").querySelector("span").textContent = stockData["Kalung Berlian (5 gram)"] || 0;
-        }
+        // function updateStockDisplay() {
+        //     let stockData = JSON.parse(localStorage.getItem("stock")) || {};
+        //     document.getElementById("stock-1").querySelector("span").textContent = stockData["Kalung Emas 24K (10 gram)"] || 0;
+        //     document.getElementById("stock-2").querySelector("span").textContent = stockData["Kalung Emas 22K (8 gram)"] || 0;
+        //     document.getElementById("stock-3").querySelector("span").textContent = stockData["Kalung Berlian (5 gram)"] || 0;
+        // }
     
         function addToCart(name, weight) {
             let stockData = JSON.parse(localStorage.getItem("stock")) || {};
