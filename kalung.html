@@ -66,18 +66,24 @@
     <script>
         async function fetchStock() {
             try {
-                const response = await fetch('stok.json');
-                const stockData = await response.json();
-                localStorage.setItem("stockData", JSON.stringify(stockData));
+                let stockData = JSON.parse(localStorage.getItem("stockData"));
+                
+                if (!stockData) {
+                    const response = await fetch('stok.json');
+                    stockData = await response.json();
+                    localStorage.setItem("stockData", JSON.stringify(stockData));
+                }
+    
                 renderProducts(stockData);
             } catch (error) {
                 console.error("Gagal mengambil stok:", error);
             }
         }
-
+    
         function renderProducts(stockData) {
             const productList = document.getElementById("product-list");
             productList.innerHTML = "";
+            
             stockData.forEach((item, index) => {
                 productList.innerHTML += `
                     <div class="col-md-4 mb-4">
@@ -93,16 +99,21 @@
                     </div>`;
             });
         }
-
+    
         function addToCart(index) {
             let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
             let item = stockData[index];
-            
+    
             if (item && item.stok > 0) {
                 item.stok -= 1;
                 localStorage.setItem("stockData", JSON.stringify(stockData));
+    
+                // Update tampilan stok
                 document.getElementById(`stock-${index}`).querySelector("span").textContent = item.stok;
-                
+    
+                // Kirim event perubahan stok agar `stok.html` ikut update
+                window.dispatchEvent(new Event("storage"));
+    
                 let cart = JSON.parse(localStorage.getItem("cart")) || [];
                 let existingProduct = cart.find(cartItem => cartItem.jenis === item.jenis);
                 
@@ -112,7 +123,7 @@
                     cart.push({ jenis: item.jenis, harga: item.harga, quantity: 1 });
                 }
                 localStorage.setItem("cart", JSON.stringify(cart));
-
+    
                 Swal.fire({
                     title: "Berhasil!",
                     text: `${item.jenis} telah ditambahkan ke keranjang.`,
@@ -131,8 +142,15 @@
                 });
             }
         }
-
+    
+        // Dengarkan perubahan di `localStorage` (sinkronisasi otomatis)
+        window.addEventListener("storage", () => {
+            console.log("🔄 Stok diperbarui dari halaman lain");
+            fetchStock();
+        });
+    
         document.addEventListener("DOMContentLoaded", fetchStock);
     </script>
+    
 </body>
 </html>
