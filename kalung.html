@@ -104,15 +104,17 @@
     <script>
 
 async function fetchStock() {
-        try {
-            const response = await fetch('stok.json'); // Simulasi API
-            const stockData = await response.json();
-            localStorage.setItem("stockData", JSON.stringify(stockData)); // Simpan ke localStorage
-            updateStockDisplay();
-        } catch (error) {
-            console.error("Gagal mengambil stok:", error);
-        }
+    try {
+        const response = await fetch('stok.json');
+        const stockData = await response.json();
+        console.log("Fetched stock data:", stockData); // Debugging
+        localStorage.setItem("stockData", JSON.stringify(stockData));
+        updateStockDisplay();
+    } catch (error) {
+        console.error("Gagal mengambil stok:", error);
     }
+}
+
 
     function updateStockDisplay() {
         let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
@@ -201,7 +203,11 @@ async function fetchStock() {
             updateStockDisplay();
         }
     
-        document.addEventListener("DOMContentLoaded", updateStockDisplay);
+        document.addEventListener("DOMContentLoaded", async () => {
+    await fetchStock();
+    updateStockDisplay();
+});
+
     </script>    
 </body>
 </html>
