@@ -109,32 +109,37 @@
             };
             localStorage.setItem("stock", JSON.stringify(stockData));
         }
-
+    
         function updateStockDisplay() {
             let stockData = JSON.parse(localStorage.getItem("stock")) || {};
             document.getElementById("stock-1").querySelector("span").textContent = stockData["Kalung Emas 24K (10 gram)"] || 0;
             document.getElementById("stock-2").querySelector("span").textContent = stockData["Kalung Emas 22K (8 gram)"] || 0;
             document.getElementById("stock-3").querySelector("span").textContent = stockData["Kalung Berlian (5 gram)"] || 0;
         }
-
+    
         function addToCart(name, weight) {
             let stockData = JSON.parse(localStorage.getItem("stock")) || {};
-
+    
             if (stockData[name] && stockData[name] > 0) {
                 stockData[name] -= 1;
                 localStorage.setItem("stock", JSON.stringify(stockData));
-
+    
+                // Tambahkan produk ke dalam keranjang
                 let cart = JSON.parse(localStorage.getItem("cart")) || [];
                 let existingProduct = cart.find(item => item.name === name);
-
+    
                 if (existingProduct) {
                     existingProduct.quantity += 1;
                 } else {
                     cart.push({ name, weight, quantity: 1 });
                 }
-
+    
                 localStorage.setItem("cart", JSON.stringify(cart));
-
+    
+                // **Tambahkan notifikasi ke halaman stok.html**
+                localStorage.setItem("stockUpdated", JSON.stringify({ name, stock: stockData[name] }));
+                window.dispatchEvent(new Event("storage")); // Memicu event storage
+    
                 Swal.fire({
                     title: "Berhasil!",
                     text: `${name} telah ditambahkan ke keranjang.`,
@@ -145,7 +150,7 @@
                         window.location.href = "cart.html";
                     }
                 });
-
+    
             } else {
                 Swal.fire({
                     title: "Stok Habis!",
@@ -153,11 +158,11 @@
                     icon: "error"
                 });
             }
-            
+    
             updateStockDisplay();
         }
-
+    
         document.addEventListener("DOMContentLoaded", updateStockDisplay);
-    </script>
+    </script>    
 </body>
 </html>
