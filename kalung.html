@@ -64,6 +64,7 @@
                             <div class="card-body text-center">
                                 <h3 class="product-title">Kalung Emas 24K (10 gram)</h3>
                                 <p class="product-price" id="price-1">Rp16.890.440</p>
+                                <p id="stock-1">Stok: <span></span></p>
                                 <button class="btn btn-buy" onclick="addToCart('Kalung Emas 24K (10 gram)', 10)">Beli Sekarang</button>
                             </div>
                         </div>
@@ -75,7 +76,8 @@
                             <img src="assets/images/kalung1.jpg" alt="Kalung Emas 22K (8 gram)" class="card-img-top product-image">
                             <div class="card-body text-center">
                                 <h3 class="product-title">Kalung Emas 22K (8 gram)</h3>
-                                <p class="product-price" id="price-2">7.890.440</p>
+                                <p class="product-price" id="price-2">Rp7.890.440</p>
+                                <p id="stock-2">Stok: <span></span></p>
                                 <button class="btn btn-buy" onclick="addToCart('Kalung Emas 22K (8 gram)', 8)">Beli Sekarang</button>
                             </div>
                         </div>
@@ -84,10 +86,11 @@
                     <!-- Produk 3 -->
                     <div class="col-md-4 mb-4">
                         <div class="card product-card">
-                            <img src="assets/images/kalung3.jpg "alt= Kalung Berlian (5 gram)" class="card-img-top product-image">
+                            <img src="assets/images/kalung3.jpg" alt="Kalung Berlian (5 gram)" class="card-img-top product-image">
                             <div class="card-body text-center">
                                 <h3 class="product-title">Kalung Berlian (5 gram)</h3>
-                                <p class="product-price" id="price-3">5.000.000</p>
+                                <p class="product-price" id="price-3">Rp5.000.000</p>
+                                <p id="stock-3">Stok: <span></span></p>
                                 <button class="btn btn-buy" onclick="addToCart('Kalung Berlian (5 gram)', 5)">Beli Sekarang</button>
                             </div>
                         </div>
@@ -97,105 +100,64 @@
         </section>
     </main>
 
-    <footer>
-        <div class="container text-center">
-            <p class="text-second">Toko Mas Duta Sumedang Online Store Copyright &copy; 2024 All Rights Reserved</p>
-        </div>
-    </footer>
-
     <script>
-        async function fetchMetalPrice() {
-        const apiKey = '0c7d6f0dd61e4426a21a934bc4561659';
-        try {
-            const response = await fetch('https://api.metalpriceapi.com/v1/latest', {
-                headers: {
-                    'X-API-KEY': apiKey,
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            const xauRate = data.rates['XAU'];
-            const idrRate = data.rates['IDR'];
-
-            const goldPricePerOunceInIDR = (1 / xauRate) * idrRate;
-            const goldPricePerGramInIDR = goldPricePerOunceInIDR / 31.1035;
-
-            updatePrices(goldPricePerGramInIDR);
-        } catch (error) {
-            console.error('Error fetching metal price:', error);
+        if (!localStorage.getItem("stock")) {
+            let stockData = {
+                "Kalung Emas 24K (10 gram)": 5,
+                "Kalung Emas 22K (8 gram)": 8,
+                "Kalung Berlian (5 gram)": 10
+            };
+            localStorage.setItem("stock", JSON.stringify(stockData));
         }
-    }
 
-    function updatePrices(goldPricePerGramInIDR) {
-        const products = [
-            { id: 'price-1', weight: 10 },
-            { id: 'price-2', weight: 8 },
-            { id: 'price-3', weight: 5 }
-        ];
+        function updateStockDisplay() {
+            let stockData = JSON.parse(localStorage.getItem("stock")) || {};
+            document.getElementById("stock-1").querySelector("span").textContent = stockData["Kalung Emas 24K (10 gram)"] || 0;
+            document.getElementById("stock-2").querySelector("span").textContent = stockData["Kalung Emas 22K (8 gram)"] || 0;
+            document.getElementById("stock-3").querySelector("span").textContent = stockData["Kalung Berlian (5 gram)"] || 0;
+        }
 
-        products.forEach(product => {
-            const price = (goldPricePerGramInIDR * product.weight).toFixed(2);
-            const formattedPrice = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 2
-            }).format(price);
-            document.getElementById(product.id).textContent = formattedPrice;
-        });
-    }
-
-    fetchMetalPrice();
         function addToCart(name, weight) {
-            const priceElement = document.querySelector(`.product-price:contains(${name})`);
-            const price = parseFloat(priceElement.textContent.replace(/[^0-9,-]+/g,""));
+            let stockData = JSON.parse(localStorage.getItem("stock")) || {};
 
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let existingProduct = cart.find(item => item.name === name);
+            if (stockData[name] && stockData[name] > 0) {
+                stockData[name] -= 1;
+                localStorage.setItem("stock", JSON.stringify(stockData));
 
-            if (existingProduct) {
-                existingProduct.quantity += 1;
-            } else {
-                cart.push({ name, weight, price: parseFloat(price), quantity: 1 });
-            }
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                let existingProduct = cart.find(item => item.name === name);
 
-            localStorage.setItem("cart", JSON.stringify(cart));
-
-            Swal.fire({
-                title: "Berhasil!",
-                text: `${name} telah ditambahkan ke keranjang.`,
-                icon: "success",
-                confirmButtonText: "Lihat Keranjang"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "cart.html";
+                if (existingProduct) {
+                    existingProduct.quantity += 1;
+                } else {
+                    cart.push({ name, weight, quantity: 1 });
                 }
-            });
-        }
 
-        function addToCart(name, weight, price) {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let existingProduct = cart.find(item => item.name === name);
+                localStorage.setItem("cart", JSON.stringify(cart));
 
-            if (existingProduct) {
-                existingProduct.quantity += 1;
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: `${name} telah ditambahkan ke keranjang.`,
+                    icon: "success",
+                    confirmButtonText: "Lihat Keranjang"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "cart.html";
+                    }
+                });
+
             } else {
-                cart.push({ name, weight, price: parseFloat(price), quantity: 1 });
+                Swal.fire({
+                    title: "Stok Habis!",
+                    text: `${name} tidak tersedia.`,
+                    icon: "error"
+                });
             }
-
-            localStorage.setItem("cart", JSON.stringify(cart));
-
-            // SweetAlert Notification
-            Swal.fire({
-    title: "Berhasil!",
-    text: `${name} telah ditambahkan ke keranjang.`,
-    icon: "success",
-    confirmButtonText: "Lihat Keranjang"
-})
+            
+            updateStockDisplay();
         }
 
-    
-
-        fetchMetalPrice();
-    </script>    
+        document.addEventListener("DOMContentLoaded", updateStockDisplay);
+    </script>
 </body>
 </html>
