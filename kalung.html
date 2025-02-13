@@ -57,157 +57,82 @@
             <div class="container">
                 <h2 class="text-center mb-5">Daftar Kalung</h2>
                 <div class="row" id="product-list">
-                    <!-- Produk 1 -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card product-card">
-                            <img src="assets/images/kalung2.jpg" alt="Kalung Emas 24K (10 gram)" class="card-img-top product-image">
-                            <div class="card-body text-center">
-                                <h3 class="product-title">Kalung Emas 24K (10 gram)</h3>
-                                <p class="product-price" id="price-1">Rp16.890.440</p>
-                                <p id="stock-1">Stok: <span></span></p>
-                                <button class="btn btn-buy" onclick="addToCart('Kalung Emas 24K (10 gram)', 10)">Beli Sekarang</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Produk 2 -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card product-card">
-                            <img src="assets/images/kalung1.jpg" alt="Kalung Emas 22K (8 gram)" class="card-img-top product-image">
-                            <div class="card-body text-center">
-                                <h3 class="product-title">Gelang 22K (8 gram)</h3>
-                                <p class="product-price" id="price-2">Rp7.890.440</p>
-                                <p id="stock-2">Stok: <span></span></p>
-                                <button class="btn btn-buy" onclick="addToCart('Kalung Emas 22K (8 gram)', 8)">Beli Sekarang</button>
-                            </div>
-                        </div>
-                    </div>
-                
-
-                    <!-- Produk 3 -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card product-card">
-                            <img src="assets/images/kalung3.jpg" alt="Kalung Berlian (5 gram)" class="card-img-top product-image">
-                            <div class="card-body text-center">
-                                <h3 class="product-title">Cincin (5 gram)</h3>
-                                <p class="product-price" id="price-3">Rp5.000.000</p>
-                                <p id="stock-3">Stok: <span></span></p>
-                                <button class="btn btn-buy" onclick="addToCart('Kalung Berlian (5 gram)', 5)">Beli Sekarang</button>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Produk akan dimuat dengan JavaScript -->
                 </div>
             </div>
         </section>
     </main>
 
     <script>
-
-async function fetchStock() {
-    try {
-        const response = await fetch('stok.json');
-        const stockData = await response.json();
-        console.log("Fetched stock data:", stockData); // Debugging
-        localStorage.setItem("stockData", JSON.stringify(stockData));
-        updateStockDisplay();
-    } catch (error) {
-        console.error("Gagal mengambil stok:", error);
-    }
-}
-
-
-    function updateStockDisplay() {
-        let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
-        document.getElementById("stock-1").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Emas 24K")?.stok || 0;
-        document.getElementById("stock-2").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Emas 22K")?.stok || 0;
-        document.getElementById("stock-3").querySelector("span").textContent = stockData.find(item => item.jenis === "Kalung Berlian")?.stok || 0;
-    }
-
-    async function updateStock(name) {
-        let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
-        let item = stockData.find(item => item.jenis === name);
-        if (item && item.stok > 0) {
-            item.stok -= 1;
-            localStorage.setItem("stockData", JSON.stringify(stockData));
-
-            await fetch('stok.json', {
-                method: "POST", 
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(stockData)
-            });
-
-            updateStockDisplay();
-        } else {
-            Swal.fire({ title: "Stok Habis!", text: `${name} tidak tersedia.`, icon: "error" });
-        }
-    }
-
-        // if (!localStorage.getItem("stock")) {
-        //     let stockData = {
-        //         "Kalung Emas 24K (10 gram)": 5,
-        //         "Kalung Emas 22K (8 gram)": 8,
-        //         "Kalung Berlian (5 gram)": 10
-        //     };
-        //     localStorage.setItem("stock", JSON.stringify(stockData));
-        // }
-    
-        // function updateStockDisplay() {
-        //     let stockData = JSON.parse(localStorage.getItem("stock")) || {};
-        //     document.getElementById("stock-1").querySelector("span").textContent = stockData["Kalung Emas 24K (10 gram)"] || 0;
-        //     document.getElementById("stock-2").querySelector("span").textContent = stockData["Kalung Emas 22K (8 gram)"] || 0;
-        //     document.getElementById("stock-3").querySelector("span").textContent = stockData["Kalung Berlian (5 gram)"] || 0;
-        // }
-    
-        function addToCart(name, weight) {
-    let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
-
-    let item = stockData.find(item => item.jenis === name);
-    if (item && item.stok > 0) {
-        item.stok -= 1;
-        localStorage.setItem("stockData", JSON.stringify(stockData));
-
-        // Kirim event perubahan stok agar stok.html ikut update
-        window.dispatchEvent(new Event("storage"));
-
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        let existingProduct = cart.find(item => item.name === name);
-
-        if (existingProduct) {
-            existingProduct.quantity += 1;
-        } else {
-            cart.push({ name, weight, quantity: 1 });
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
-
-        Swal.fire({
-            title: "Berhasil!",
-            text: `${name} telah ditambahkan ke keranjang.`,
-            icon: "success",
-            confirmButtonText: "Lihat Keranjang"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "cart.html";
+        async function fetchStock() {
+            try {
+                const response = await fetch('stok.json');
+                const stockData = await response.json();
+                localStorage.setItem("stockData", JSON.stringify(stockData));
+                renderProducts(stockData);
+            } catch (error) {
+                console.error("Gagal mengambil stok:", error);
             }
-        });
+        }
 
-    } else {
-        Swal.fire({
-            title: "Stok Habis!",
-            text: `${name} tidak tersedia.`,
-            icon: "error"
-        });
-    }
+        function renderProducts(stockData) {
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = "";
+            stockData.forEach((item, index) => {
+                productList.innerHTML += `
+                    <div class="col-md-4 mb-4">
+                        <div class="card product-card">
+                            <img src="assets/images/${item.image}" alt="${item.jenis}" class="card-img-top product-image">
+                            <div class="card-body text-center">
+                                <h3 class="product-title">${item.jenis}</h3>
+                                <p class="product-price">Rp${typeof item.harga === "number" ? item.harga.toLocaleString() : "0"}</p>
+                                <p id="stock-${index}">Stok: <span>${item.stok}</span></p>
+                                <button class="btn btn-buy" onclick="addToCart(${index})">Beli Sekarang</button>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }
 
-    updateStockDisplay();
-}
+        function addToCart(index) {
+            let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+            let item = stockData[index];
+            
+            if (item && item.stok > 0) {
+                item.stok -= 1;
+                localStorage.setItem("stockData", JSON.stringify(stockData));
+                document.getElementById(`stock-${index}`).querySelector("span").textContent = item.stok;
+                
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                let existingProduct = cart.find(cartItem => cartItem.jenis === item.jenis);
+                
+                if (existingProduct) {
+                    existingProduct.quantity += 1;
+                } else {
+                    cart.push({ jenis: item.jenis, quantity: 1 });
+                }
+                localStorage.setItem("cart", JSON.stringify(cart));
 
-    
-        document.addEventListener("DOMContentLoaded", async () => {
-    await fetchStock();
-    updateStockDisplay();
-});
+                Swal.fire({
+                    title: "Berhasil!",
+                    text: `${item.jenis} telah ditambahkan ke keranjang.`,
+                    icon: "success",
+                    confirmButtonText: "Lihat Keranjang"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "cart.html";
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Stok Habis!",
+                    text: `${item.jenis} tidak tersedia.`,
+                    icon: "error"
+                });
+            }
+        }
 
-    </script>    
+        document.addEventListener("DOMContentLoaded", fetchStock);
+    </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 [
-    { "jenis": "Kalung Emas 24K", "stok": 5 },
-    { "jenis": "Kalung Emas 22K", "stok": 8 },
-    { "jenis": "Kalung Berlian", "stok": 10 }
+    { "jenis": "Kalung Emas 24K", "harga": 1500000, "stok": 5, "image": "kalung1.jpg" },
+    { "jenis": "Kalung Emas 22K", "harga": 1200000, "stok": 8, "image": "kalung2.jpg" },
+    { "jenis": "Kalung Berlian", "harga": 3000000, "stok": 10, "image": "product5.jpg" }
 ]
