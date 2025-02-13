@@ -206,24 +206,38 @@
         }
 
         function checkoutItem(index) {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let item = cart[index];
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          let item = cart[index];
+      
+          let orderData = {
+              id: new Date().getTime(), // ID unik berdasarkan timestamp
+              item: item.jenis,
+              total: item.harga * item.quantity
+          };
+      
+          localStorage.setItem("orderId", JSON.stringify(orderData));
+      
+          console.log("Checkout Item:", orderData); // Debugging: cek data yang disimpan
+      
+          window.location.href = `midtrans.html?orderId=${orderData.id}&total=${orderData.total}`;
+      }
+      
 
-            // Simpan item & harga ke dalam orderId di localStorage
-            let orderData = { item: item.jenis, total: item.harga * item.quantity };
-            localStorage.setItem("orderId", JSON.stringify(orderData));
-
-            window.location.href = `midtrans.html?item=${encodeURIComponent(item.jenis)}&total=${item.harga * item.quantity}`;
-        }
-
-        function checkoutAll() {
-            let totalHarga = document.getElementById("total-price").textContent;
-
-            // Simpan total harga ke orderId di localStorage
-            localStorage.setItem("orderId", JSON.stringify({ total: totalHarga.replace(/\./g, '') }));
-
-            window.location.href = `midtrans.html?total=${totalHarga.replace(/\./g, '')}`;
-        }
+      function checkoutAll() {
+        let totalHarga = document.getElementById("total-price").textContent.replace(/\./g, '');
+        
+        let orderData = {
+            id: new Date().getTime(),
+            total: totalHarga
+        };
+    
+        localStorage.setItem("orderId", JSON.stringify(orderData));
+    
+        console.log("Checkout All:", orderData); // Debugging: cek data yang disimpan
+    
+        window.location.href = `midtrans.html?orderId=${orderData.id}&total=${orderData.total}`;
+    }
+    
     </script>
 </body>
 </html>
