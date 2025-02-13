@@ -62,15 +62,19 @@
             padding: 15px;
             border-bottom: 1px solid #ddd;
         }
-        .table tbody tr:hover {
-            background-color: #f1f1f1;
+        .btn-remove {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-remove:hover {
+            background-color: #b02a37;
         }
         .btn-checkout {
             background: linear-gradient(135deg, #28a745, #218838);
             color: #fff;
-            font-size: 1.2rem;
-            padding: 12px 30px;
-            border-radius: 30px;
+            font-size: 1rem;
+            padding: 8px 15px;
+            border-radius: 20px;
             font-weight: bold;
             transition: all 0.3s ease;
             text-align: center;
@@ -81,6 +85,21 @@
             transform: scale(1.05);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
+        .total-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffb400;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .total-section h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+        }
         footer {
             background: #333;
             color: #fff;
@@ -89,14 +108,6 @@
             margin-top: 50px;
             font-size: 1rem;
             font-weight: 500;
-        }
-        @media (max-width: 768px) {
-            .cart-section {
-                padding: 20px;
-            }
-            .main-nav h1 {
-                font-size: 1.5rem;
-            }
         }
     </style>
 </head>
@@ -123,13 +134,17 @@
                                 <th>Produk</th>
                                 <th>Jumlah</th>
                                 <th>Total Harga</th>
-                                <th>Checkout</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="cart-table-body">
                             <!-- Cart items will be populated here -->
                         </tbody>
                     </table>
+                </div>
+                <div class="total-section">
+                    <h4>Total: Rp <span id="total-price">0</span></h4>
+                    <button class="btn btn-checkout" onclick="checkoutAll()">Checkout Semua</button>
                 </div>
             </div>
         </section>
@@ -143,84 +158,63 @@
 
     <script>
         window.onload = function () {
-            const token = localStorage.getItem("authToken");
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const tableBody = document.querySelector("#cart-table-body");
+            const totalPriceEl = document.getElementById("total-price");
+            let totalHarga = 0;
 
-            if (!token) {
-                Swal.fire({
-                    title: "Harap Login Terlebih Dahulu",
-                    text: "Anda harus login untuk mengakses halaman ini.",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonText: "Login",
-                    cancelButtonText: "Batal",
-                }).then((result) => {
-                    window.location.href = result.isConfirmed ? "loginregis.html" : "index.html";
+            tableBody.innerHTML = "";
+
+            if (cart.length === 0) {
+                tableBody.innerHTML = "<tr><td colspan='5' class='text-center'>Tidak ada data pesanan.</td></tr>";
+            } else {
+                cart.forEach((item, index) => {
+                    const subtotal = item.harga * item.quantity;
+                    totalHarga += subtotal;
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.jenis}</td>
+                        <td>${item.quantity}</td>
+                        <td>Rp ${subtotal.toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm btn-checkout" onclick="checkoutItem(${index})">Checkout</button>
+                            <button class="btn btn-danger btn-sm btn-remove" data-index="${index}">Hapus</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
                 });
-                return;
+
+                // Update total harga
+                totalPriceEl.textContent = totalHarga.toLocaleString();
+
+                // Tambahkan event listener untuk tombol hapus
+                document.querySelectorAll(".btn-remove").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const index = this.getAttribute("data-index");
+                        removeFromCart(index);
+                    });
+                });
             }
-
-            const userId = getUserIdFromToken(token);
-
-            fetch(`https://be-3.vercel.app/orders/${userId}`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                const tableBody = document.querySelector("#cart-table-body");
-                tableBody.innerHTML = "";
-
-                if (data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='5' class='text-center'>Tidak ada data pesanan.</td></tr>";
-                } else {
-                    data.forEach((item, index) => {
-                        const subtotal = item.total_harga || 0;
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td>${index + 1}</td>
-                            <td>
-                                <p><strong>Jenis Perhiasan:</strong> ${item.jenis_perhiasan}</p>
-                                <p><strong>Jenis Emas:</strong> ${item.jenis_emas}</p>
-                                <p><strong>Berat Emas:</strong> ${item.berat_emas} gram</p>
-                                <p><strong>Campuran Tambahan:</strong> ${item.campuran_tambahan}</p>
-                                <p><strong>Persentase Emas:</strong> ${item.persentase_emas}%</p>
-                            </td>
-                            <td>${item.quantity || 1}</td>
-                            <td>Rp ${subtotal.toLocaleString()}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm btn-checkout" data-orderid="${item.order_id}" data-total="${subtotal}">Checkout</button>
-                            </td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-
-                    document.querySelectorAll(".btn-checkout").forEach(button => {
-                        button.addEventListener("click", function () {
-                            const orderId = this.getAttribute("data-orderid");
-                            const totalHarga = this.getAttribute("data-total");
-                            localStorage.setItem("cartTotal", totalHarga);
-                            localStorage.setItem("orderId", orderId);
-                            window.location.href = `midtrans.html?order_id=${orderId}`;
-                        });
-                    });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Kesalahan",
-                    text: "Tidak dapat terhubung ke server.",
-                });
-                console.error("Error:", error);
-            });
         };
 
-        function getUserIdFromToken(token) {
-            if (!token) return null;
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.user_id;
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            window.location.reload();
+        }
+
+        function checkoutItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let item = cart[index];
+            localStorage.setItem("checkoutItem", JSON.stringify(item));
+            window.location.href = `midtrans.html?item=${encodeURIComponent(item.jenis)}&total=${item.harga * item.quantity}`;
+        }
+
+        function checkoutAll() {
+            let totalHarga = document.getElementById("total-price").textContent;
+            window.location.href = `midtrans.html?total=${totalHarga}`;
         }
     </script>
 </body>
