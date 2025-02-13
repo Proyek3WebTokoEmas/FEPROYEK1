@@ -209,9 +209,9 @@
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let item = cart[index];
 
-            // Simpan item yang akan di-checkout ke localStorage
-            localStorage.setItem("checkoutItem", JSON.stringify(item));
-            localStorage.setItem("checkoutTotal", item.harga * item.quantity);
+            // Simpan item & harga ke dalam orderId di localStorage
+            let orderData = { item: item.jenis, total: item.harga * item.quantity };
+            localStorage.setItem("orderId", JSON.stringify(orderData));
 
             window.location.href = `midtrans.html?item=${encodeURIComponent(item.jenis)}&total=${item.harga * item.quantity}`;
         }
@@ -219,8 +219,8 @@
         function checkoutAll() {
             let totalHarga = document.getElementById("total-price").textContent;
 
-            // Simpan total harga ke localStorage sebelum checkout
-            localStorage.setItem("checkoutTotal", totalHarga.replace(/\./g, ''));
+            // Simpan total harga ke orderId di localStorage
+            localStorage.setItem("orderId", JSON.stringify({ total: totalHarga.replace(/\./g, '') }));
 
             window.location.href = `midtrans.html?total=${totalHarga.replace(/\./g, '')}`;
         }
