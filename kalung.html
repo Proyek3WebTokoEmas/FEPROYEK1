@@ -159,49 +159,49 @@ async function fetchStock() {
         // }
     
         function addToCart(name, weight) {
-            let stockData = JSON.parse(localStorage.getItem("stock")) || {};
-    
-            if (stockData[name] && stockData[name] > 0) {
-                stockData[name] -= 1;
-                localStorage.setItem("stock", JSON.stringify(stockData));
-    
-                // Tambahkan produk ke dalam keranjang
-                let cart = JSON.parse(localStorage.getItem("cart")) || [];
-                let existingProduct = cart.find(item => item.name === name);
-    
-                if (existingProduct) {
-                    existingProduct.quantity += 1;
-                } else {
-                    cart.push({ name, weight, quantity: 1 });
-                }
-    
-                localStorage.setItem("cart", JSON.stringify(cart));
-    
-                // **Tambahkan notifikasi ke halaman stok.html**
-                localStorage.setItem("stockUpdated", JSON.stringify({ name, stock: stockData[name] }));
-                window.dispatchEvent(new Event("storage")); // Memicu event storage
-    
-                Swal.fire({
-                    title: "Berhasil!",
-                    text: `${name} telah ditambahkan ke keranjang.`,
-                    icon: "success",
-                    confirmButtonText: "Lihat Keranjang"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "cart.html";
-                    }
-                });
-    
-            } else {
-                Swal.fire({
-                    title: "Stok Habis!",
-                    text: `${name} tidak tersedia.`,
-                    icon: "error"
-                });
-            }
-    
-            updateStockDisplay();
+    let stockData = JSON.parse(localStorage.getItem("stockData")) || [];
+
+    let item = stockData.find(item => item.jenis === name);
+    if (item && item.stok > 0) {
+        item.stok -= 1;
+        localStorage.setItem("stockData", JSON.stringify(stockData));
+
+        // Kirim event perubahan stok agar stok.html ikut update
+        window.dispatchEvent(new Event("storage"));
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let existingProduct = cart.find(item => item.name === name);
+
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push({ name, weight, quantity: 1 });
         }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        Swal.fire({
+            title: "Berhasil!",
+            text: `${name} telah ditambahkan ke keranjang.`,
+            icon: "success",
+            confirmButtonText: "Lihat Keranjang"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "cart.html";
+            }
+        });
+
+    } else {
+        Swal.fire({
+            title: "Stok Habis!",
+            text: `${name} tidak tersedia.`,
+            icon: "error"
+        });
+    }
+
+    updateStockDisplay();
+}
+
     
         document.addEventListener("DOMContentLoaded", async () => {
     await fetchStock();
